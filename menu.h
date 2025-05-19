@@ -63,9 +63,9 @@ private:
 	//添加游戏
 
 	//绘制详情面板
-
+	void DrawDetailPanel(const GameInfo& game){}
 	//绘制主界面
-
+	void DrawMainView(){}
 public:
 	GameLauncherUI() {
 		// 初始化游戏列表
