@@ -67,6 +67,7 @@ class GameLauncherUI {
 	//绘制主界面
 	void DrawMainView(){}
 
+
 	GameLauncherUI() {
 		// 初始化游戏列表
 		games.push_back({ "1", "Game 1", "cover1.jpg", "game1.exe", 0, 0, { "Action", "Adventure" } });

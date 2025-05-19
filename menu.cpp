@@ -5,9 +5,6 @@
 
 using namespace std;
 
-
-
-// 修复后的代码
     void GameLauncherUI::DrawDetailPanel(const GameInfo& game, const UITheme& theme) {
     int panelWidth = 400;
     int panelHeight = 500;
@@ -24,11 +21,11 @@ using namespace std;
 
     //封面大图
 	int coverWidth = 200;
-	setfillcolor(RGB(rand() % 155 + 100, rand() % 155 + 100, rand() % 155 + 100));
+	setfillcolor(RGB(255, 255, 255));//待修改，游戏封面
     fillrectangle(x + 20, y + 60, x + panelWidth - 20, y + 60 + coverWidth);
 
     //游戏信息
-	settextstyle(14, 0, _T("微软雅黑"));
+	settextstyle(20, 0, _T("微软雅黑"));
     ostringstream info;
     info << "上次游玩时间: " << game.GetLastPlayedStr() << "\n"
         << "游玩次数: " << game.playCount << "\n"
@@ -49,3 +46,8 @@ using namespace std;
 	 line(x + panelWidth - 30, y + 20, x + panelWidth - 20, y + 30);
 	 line(x + panelWidth - 20, y + 20, x + panelWidth - 30, y + 30);
 }
+
+    void GameLauncherUI::run() {
+        initgraph(1000, 700);
+		BeginBatchDraw();
+    }
