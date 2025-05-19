@@ -34,7 +34,7 @@ struct UITheme {
 };
 
 class GameLauncherUI {
-private:
+	public :
 	vector<GameInfo> games;
 	UITheme theme;
 	int selectedIndex = -1;
@@ -63,13 +63,14 @@ private:
 	//添加游戏
 
 	//绘制详情面板
-	void DrawDetailPanel(const GameInfo& game){}
+	void DrawDetailPanel(const GameInfo& game, const UITheme& theme);
 	//绘制主界面
 	void DrawMainView(){}
-public:
+
 	GameLauncherUI() {
 		// 初始化游戏列表
 		games.push_back({ "1", "Game 1", "cover1.jpg", "game1.exe", 0, 0, { "Action", "Adventure" } });
 	}
 	void run() {}
+	
 };
