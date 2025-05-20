@@ -21,15 +21,24 @@
     <ClCompile Include="menu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="category_add.cpp">
+    <ClCompile Include="category.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="range.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="add.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="menu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="add.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="range.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

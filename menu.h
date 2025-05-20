@@ -42,7 +42,7 @@ class GameLauncherUI {
 	bool showDetails = false;
 
 	// 绘制圆角矩形
-	void DrawRoundRect(int x1, int y1, int x2, int y2, int radius, COLORREF fill, COLORREF outline) {
+	inline void DrawRoundRect(int x1, int y1, int x2, int y2, int radius, COLORREF fill, COLORREF outline) {
 		setfillcolor(fill);
 		fillroundrect(x1, y1, x2, y2, radius, radius);
 		setlinecolor(outline);
@@ -59,19 +59,22 @@ class GameLauncherUI {
 	//3：3D
 
 	//筛选
-
+	void categroy();
 	//添加游戏
 
 	//绘制详情面板
 	void DrawDetailPanel(const GameInfo& game, const UITheme& theme);
 	//绘制主界面
-	void DrawMainView(){}
+	void DrawMainView();
 
 
 	GameLauncherUI() {
-		// 初始化游戏列表
-		games.push_back({ "1", "Game 1", "cover1.jpg", "game1.exe", 0, 0, { "Action", "Adventure" } });
+		// 初始化游戏信息
+		GameInfo game1 = { "1", "Game 1", "cover1.jpg", "game1.exe", time(0), 5, {"Action", "Adventure"} };
+		GameInfo game2 = { "2", "Game 2", "cover2.jpg", "game2.exe", time(0), 3, {"Puzzle", "Strategy"} };
+		games.push_back(game1);
+		games.push_back(game2);
 	}
-	void run() {}
+	void run();
 	
 };
