@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "vector": "cpp",
+        "ios": "cpp",
+        "xutility": "cpp",
+        "iosfwd": "cpp",
+        "sstream": "cpp",
+        "xlocinfo": "cpp",
+        "xstring": "cpp"
+    }
+}
