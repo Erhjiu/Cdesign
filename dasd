@@ -1,0 +1,61 @@
+[33mcommit 91bc1e797ab3366b203ae073a184b551a1b92af5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: Erhjiu <2912066768@qq.com>
+Date:   Tue May 20 20:28:55 2025 +0800
+
+    看似写了很多，其实后面要大改
+
+[33mcommit fef575c0e20a8e9cda4780809f4701f4f6400eba[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: d11bed9 2724e8d
+Author: Erhjiu <2912066768@qq.com>
+Date:   Tue May 20 14:32:56 2025 +0800
+
+    Merge branch 'master' of https://github.com/Erhjiu/Cdesign
+
+[33mcommit d11bed9349fd1c1797739f0d2ab836a535899aae[m
+Author: Erhjiu <2912066768@qq.com>
+Date:   Tue May 20 14:19:43 2025 +0800
+
+    大改！！
+
+[33mcommit 2724e8df3b4b8148b2c7f2d2ca94c6c6d4f997fe[m
+Author: Churk_Ben <2779675416@qq.com>
+Date:   Tue May 20 13:19:03 2025 +0800
+
+    啥也没改, 纯Format了代码
+    - 格式化代码，调整了头文件包含和函数定义的空格，增强可读性
+
+[33mcommit 20df2323fcbdf2f2083fd0a6452ff8120e0d3e1a[m
+Author: Erhjiu <2912066768@qq.com>
+Date:   Mon May 19 23:29:29 2025 +0800
+
+    游戏详情做完，整体规划修改
+
+[33mcommit 5d565263e5ec73a1acf8793a906dbb0fff6023e2[m
+Author: Erhjiu <2912066768@qq.com>
+Date:   Mon May 19 22:38:22 2025 +0800
+
+    DrawDetailPanel
+
+[33mcommit 0863704e0d1616ef5de7a8147c11ec0b4c988ba9[m
+Author: Erhjiu <2912066768@qq.com>
+Date:   Mon May 19 22:37:41 2025 +0800
+
+    1037
+
+[33mcommit e8abca102b757c5120c1cfa942eb4feda7a34507[m[33m ([m[1;32mmenu[m[33m)[m
+Author: Erhjiu <2912066768@qq.com>
+Date:   Mon May 19 14:55:51 2025 +0800
+
+    5191455
+
+[33mcommit a93fc64a16f43e70a912a0f15cccb9e5f7b34c92[m[33m ([m[1;31morigin/menu[m[33m)[m
+Author: Erhjiu <2912066768@qq.com>
+Date:   Mon May 19 14:19:19 2025 +0800
+
+    添加项目文件。
+
+[33mcommit 92d1af9bf4b877d4e5b7d5887efad2766582427c[m
+Author: Erhjiu <2912066768@qq.com>
+Date:   Mon May 19 14:19:17 2025 +0800
+
+    添加 .gitattributes 和 .gitignore。
