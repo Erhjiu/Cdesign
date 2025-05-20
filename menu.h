@@ -1,5 +1,5 @@
 #pragma once
-#include <graphics.h>
+#include <easyx.h>
 #include <vector>
 #include <string>
 #include <ctime>
@@ -39,9 +39,13 @@ struct UITheme
 
 class GameLauncherUI
 {
-public:
+private:
 	vector<GameInfo> games;
 	UITheme theme;
+	// 过滤器
+	string filter = "全部";
+	// 排列方式
+	int layout = 1; // 1:网格, 2:列表, 3:3D
 	int selectedIndex = -1;
 	int hoveredIndex = -1;
 	bool showDetails = false;
@@ -53,25 +57,33 @@ public:
 		setlinecolor(outline);
 		roundrect(x1, y1, x2, y2, radius, radius);
 	}
-	// 绘制游戏卡片
-	// 1:网格(默认)
-	// 2:列表
-	// 3：3D
 
-	// 排列
-	// 1:网格(默认)
-	// 2:列表
-	// 3：3D
+	// 获取鼠标悬停的游戏索引（目前是默认网格，需要后期更改）
+	inline int GetHoveredIndex(int mouseX, int mouseY) {
+		const int cols = 3;
+		const int cardWith = 220, cardHeight = 280;
+		const int spacing = 30;
+		const int startX = 50, startY = 100;
 
+		for (int i = 0; i < games.size(); i++) {
+			int row = i / cols;
+			int col = i % cols;
+			int x = startX + col * (cardWith + spacing);
+			int y = startY + row * (cardHeight + spacing);
+
+			if (mouseX >= x && mouseX <= x + cardWith && mouseY >= y && mouseY <= y + cardHeight) {
+				return i;
+			}
+		}
+		return -1;
+	}
+public:
 	//筛选
 	void categroy();
-	//添加游戏
-
 	//绘制详情面板
 	void DrawDetailPanel(const GameInfo& game, const UITheme& theme);
 	//绘制主界面
 	void DrawMainView();
-
 
 	GameLauncherUI() {
 		// 初始化游戏信息

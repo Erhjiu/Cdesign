@@ -21,10 +21,10 @@
     <ClCompile Include="menu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="category.cpp">
+    <ClCompile Include="FilterBar.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="range.cpp">
+    <ClCompile Include="mainView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="add.cpp">
@@ -39,6 +39,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="range.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FilterBar.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
