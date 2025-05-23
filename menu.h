@@ -93,5 +93,4 @@ public:
 		games.push_back(game2);
 	}
 	void run();
-	
 };

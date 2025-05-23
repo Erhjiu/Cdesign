@@ -44,5 +44,8 @@
     <ClInclude Include="FilterBar.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="dropDown.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
