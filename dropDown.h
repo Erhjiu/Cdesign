@@ -11,13 +11,11 @@ private:
 	int x, y, width, height;
 	bool isOpen = false;
 	vector<string> options = {"Íø¸ñ","ÁÐ±í","3D"};
-	int selectedIndex = -1;
+	int selectedIndex = 0;
 public:
 	dropDown(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
-	void Draw(const UITheme& theme)
-	{
-		
-	}
+	void Draw(const UITheme& theme);
+	void clickDropDown(int mouseX, int mouseY,dropDown& dropDownMenu);
 	void Toggle()
 	{
 		isOpen = !isOpen;

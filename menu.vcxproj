@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="add.cpp" />
+    <ClCompile Include="dropDown.cpp" />
     <ClCompile Include="FilterBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />

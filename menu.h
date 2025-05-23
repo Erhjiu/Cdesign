@@ -35,6 +35,7 @@ struct UITheme
 	COLORREF text = RGB(240, 240, 240);
 	COLORREF textSecondary = RGB(180, 180, 180);
 	COLORREF accent = RGB(100, 180, 255);
+	COLORREF add = RGB(255, 255, 255);   
 };
 
 class GameLauncherUI
@@ -45,7 +46,6 @@ private:
 	// 过滤器
 	string filter = "全部";
 	// 排列方式
-	int layout = 1; // 1:网格, 2:列表, 3:3D
 	int selectedIndex = -1;
 	int hoveredIndex = -1;
 	bool showDetails = false;
