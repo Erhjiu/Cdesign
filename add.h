@@ -12,5 +12,6 @@ public:
 		: x(x), y(y), width(width), height(height) {}
 	void Draw(const UITheme& theme);
 	void clickAddButton(int mouseX, int mouseY);
-	void addDetailPanel(bool isOpen, const GameInfo& game, const UITheme& theme);
+	void addDetailPanel(bool isOpen,  const UITheme& theme);
+	void drawpanel()
 };
