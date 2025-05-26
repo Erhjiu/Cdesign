@@ -2,19 +2,23 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-static bool isOpen = false;
 
-void addButton::Draw(const UITheme& theme)
+void addButton::Draw(const UITheme& theme,bool isHovered)
 {
-	setfillcolor(theme.add);
-	fillrectangle(x, y + height / 3, x+width, y + height * 2 / 3);
-	fillrectangle(x + width / 3, y, x + width * 2 / 3, y + height);
-}
+	// 绘制圆角矩形按钮
+	COLORREF bg = isHovered ? theme.cardHover : theme.add; // 鼠标悬停时的颜色
+	setfillcolor(bg);
+	setlinecolor(RGB(100, 100, 100));  // 边框颜色
+	fillroundrect(x, y, x + width, y + height, 10, 10);
 
-void addButton::clickAddButton(int mouseX, int mouseY) {
-	if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
-		isOpen = !isOpen;
-	}
+	// 绘制 "+" 符号
+	setlinestyle(PS_SOLID, 3);         // 线条粗细
+	setlinecolor(RGB(0, 0, 0));        // 符号颜色
+
+	// 横线
+	line(x + width / 4, y + height / 2, x + width * 3 / 4, y + height / 2);
+	// 竖线
+	line(x + width / 2, y + height / 4, x + width / 2, y + height * 3 / 4);
 }
 
 GameInfo addButton::askGameInfo() {
@@ -60,6 +64,21 @@ GameInfo addButton::askGameInfo() {
 	return gameinfo;
 }
 
-void addButton::addDetailPanel(bool isOpen,  const UITheme& theme) {
+void addButton::addRun(vector<GameInfo>& games) {
+	ExMessage msg;
+	if (peekmessage(&msg, EX_MOUSE)) {
+		bool isHovered = (msg.x >= x && msg.x <= x + width && msg.y >= y && msg.y <= y + height);
+		if (isHovered && msg.message == WM_LBUTTONDOWN) {
+			GameInfo newGame = askGameInfo();
+			if (!newGame.title.empty()) {
+				games.push_back(newGame);
+				cout << "游戏已添加: " << newGame.title << endl;
+			}
+		}
+	}
+}
 
+bool addButton::checkHover(int mouseX, int mouseY) {
+	return mouseX >= x && mouseX <= x + width &&
+		mouseY >= y && mouseY <= y + height;
 }

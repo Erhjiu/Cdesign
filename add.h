@@ -2,18 +2,19 @@
 #pragma once
 #include "menu.h"
 #include <easyx.h>
+#include <vector>
 
 class addButton
 {
 private:
 	int x, y, width, height;
-	bool isOpen = false;
 
 public:
+	addButton() : x(0), y(0), width(50), height(50) {};
 	addButton(int x, int y, int width, int height)
 		: x(x), y(y), width(width), height(height) {}
-	void Draw(const UITheme &theme);
-	void clickAddButton(int mouseX, int mouseY);
-	void addDetailPanel(bool isOpen, const UITheme &theme);
-	void drawpanel()
+    void Draw(const UITheme& theme, bool isHovered);
+	GameInfo askGameInfo();
+	void addRun(std::vector<GameInfo>& games);
+	bool checkHover(int mouseX, int mouseY);
 };

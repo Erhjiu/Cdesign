@@ -11,14 +11,9 @@ struct GameInfo
 	string title;
 	string coverPath;	   // 封面
 	string exePath;		   // 游戏路径
-	time_t lastPlayed;     // 上次游玩时间
-	int playCount;	       // 游玩次数
+	time_t lastPlayed = 0;     // 上次游玩时间
+	int playCount = 0;	       // 游玩次数
 	vector<string> tags;   // 标签
-
-	// 构造函数
-	GameInfo(string id, string title, string coverPath, string exePath, time_t lastPlayed, int playCount, vector<string> tags)
-		: id(id), title(title), coverPath(coverPath), exePath(exePath), lastPlayed(lastPlayed), playCount(playCount), tags(tags) {
-	}
 
 	string GetLastPlayedStr() const
 	{
@@ -41,7 +36,7 @@ struct UITheme
 	COLORREF text = RGB(240, 240, 240);
 	COLORREF textSecondary = RGB(180, 180, 180);
 	COLORREF accent = RGB(100, 180, 255);
-	COLORREF add = RGB(255, 255, 255);   
+	COLORREF add = RGB(255, 255, 255);
 };
 
 class GameLauncherUI
@@ -57,12 +52,11 @@ private:
 	bool showDetails = false;
 
 	void LoadSampleData() {
-		games.push_back(GameInfo("1", "游戏1", "cover1.jpg", "game1.exe", 0, 0, { "动作", "冒险" }));
-		games.push_back(GameInfo("2", "游戏2", "cover2.jpg", "game2.exe", 0, 0, { "角色扮演", "冒险" }));
-		games.push_back(GameInfo("3", "游戏3", "cover3.jpg", "game3.exe", 0, 0, { "策略", "模拟" }));
-		games.push_back(GameInfo("4", "游戏4", "cover4.jpg", "game4.exe", 0, 0, { "射击", "动作" }));
-		games.push_back(GameInfo("5", "游戏5", "cover5.jpg", "game5.exe", 0, 0, { "体育", "竞速" }));
-		games.push_back(GameInfo("6", "游戏6", "cover6.jpg", "game6.exe", 0, 0, { "益智", "休闲" }));
+		games.push_back({ "1", "游戏1", "cover1.jpg", "game1.exe", time(nullptr), 5, {"动作", "冒险"} });
+		games.push_back({ "2", "游戏2", "cover2.jpg", "game2.exe", time(nullptr), 3, {"角色扮演"} });
+		games.push_back({ "3", "游戏3", "cover3.jpg", "game3.exe", time(nullptr), 10, {"策略"} });
+		games.push_back({ "4", "游戏4", "cover4.jpg", "game4.exe", time(nullptr), 0, {"休闲"} });
+		games.push_back({ "5", "游戏5", "cover5.jpg", "game5.exe", time(nullptr), 7, {"动作"} });
 	}
 
 
@@ -82,7 +76,7 @@ public:
 	//绘制主界面
 	void DrawMainView();
 
-	GameLauncherUI() {
+	GameLauncherUI(){
 		LoadSampleData();
 	}
 	void run();

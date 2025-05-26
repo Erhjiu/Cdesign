@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "dropDown.h"
+#include "add.h"
 #include <easyx.h>
 #include <algorithm>
 #include <sstream>
@@ -53,13 +54,12 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
 
 void GameLauncherUI::run()
 {
-    initgraph(1000, 700);
+    initgraph(1000, 800);
     BeginBatchDraw();
 
     while (true) {
+        addButton add;
         ExMessage msg;
-
-        // 非阻塞处理所有输入消息
         while (peekmessage(&msg, EX_MOUSE | EX_KEY)) {
             // 更新悬停状态
             hoveredIndex = -1;
@@ -69,7 +69,7 @@ void GameLauncherUI::run()
             const int spacing = 30;
             const int startX = 50;
             const int startY = 100;
-
+     
             // 检查鼠标悬停/点击
             if (msg.message == WM_MOUSEMOVE || msg.message == WM_LBUTTONDOWN) {
                 for (int i = 0; i < games.size(); i++) {
@@ -86,7 +86,7 @@ void GameLauncherUI::run()
                         if (msg.message == WM_LBUTTONDOWN) {
                             selectedIndex = i;
 
-                            // 双击检测（改进版）
+                            // 双击检测
                             static POINT lastClickPos = { 0, 0 };
                             static DWORD lastClickTime = 0;
                             DWORD currentTime = GetTickCount();
@@ -130,6 +130,7 @@ void GameLauncherUI::run()
                 if (showDetails) showDetails = false;
                 else break;
             }
+            add.addRun(games);
         }
 
         // 渲染逻辑

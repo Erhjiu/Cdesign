@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "add.h"
 #include "FilterBar.h"
 #include <easyx.h>
 
@@ -56,6 +57,10 @@ void GameLauncherUI::DrawMainView()
         DrawGameCard(games[i], x, y, cardWidth, cardHeight,
             i == hoveredIndex, i == selectedIndex);
     }
+	ExMessage msg = getmessage();
+	addButton addBtn(getwidth() - 70, getheight() - 70, 50, 50);
+	bool isAddHovered = addBtn.checkHover(msg.x,msg.y);
+	addBtn.Draw(theme, isAddHovered);
 
     // …∏—°±Í«© (ºÚªØ∞Ê)
     settextstyle(14, 0, "Œ¢»Ì—≈∫⁄");
