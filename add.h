@@ -13,4 +13,5 @@ public:
 	void Draw(const UITheme& theme);
 	void clickAddButton(int mouseX, int mouseY);
 	void addDetailPanel(bool isOpen, const GameInfo& game, const UITheme& theme);
+	void addGame(vector<GameInfo> games);
 };

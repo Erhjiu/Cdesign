@@ -11,9 +11,15 @@ struct GameInfo
 	string title;
 	string coverPath;	   // 封面
 	string exePath;		   // 游戏路径
-	time_t lastPlayed = 0; // 上次游玩时间
-	int playCount = 0;	   // 游玩次数
+	time_t lastPlayed;     // 上次游玩时间
+	int playCount;	       // 游玩次数
 	vector<string> tags;   // 标签
+
+	// 构造函数
+	GameInfo(string id, string title, string coverPath, string exePath, time_t lastPlayed, int playCount, vector<string> tags)
+		: id(id), title(title), coverPath(coverPath), exePath(exePath), lastPlayed(lastPlayed), playCount(playCount), tags(tags) {
+	}
+
 	string GetLastPlayedStr() const
 	{
 		if (playCount == 0)
@@ -50,6 +56,16 @@ private:
 	int hoveredIndex = -1;
 	bool showDetails = false;
 
+	void LoadSampleData() {
+		games.push_back(GameInfo("1", "游戏1", "cover1.jpg", "game1.exe", 0, 0, { "动作", "冒险" }));
+		games.push_back(GameInfo("2", "游戏2", "cover2.jpg", "game2.exe", 0, 0, { "角色扮演", "冒险" }));
+		games.push_back(GameInfo("3", "游戏3", "cover3.jpg", "game3.exe", 0, 0, { "策略", "模拟" }));
+		games.push_back(GameInfo("4", "游戏4", "cover4.jpg", "game4.exe", 0, 0, { "射击", "动作" }));
+		games.push_back(GameInfo("5", "游戏5", "cover5.jpg", "game5.exe", 0, 0, { "体育", "竞速" }));
+		games.push_back(GameInfo("6", "游戏6", "cover6.jpg", "game6.exe", 0, 0, { "益智", "休闲" }));
+	}
+
+
 	// 绘制圆角矩形
 	inline void DrawRoundRect(int x1, int y1, int x2, int y2, int radius, COLORREF fill, COLORREF outline) {
 		setfillcolor(fill);
@@ -57,27 +73,8 @@ private:
 		setlinecolor(outline);
 		roundrect(x1, y1, x2, y2, radius, radius);
 	}
-
-	// 获取鼠标悬停的游戏索引（目前是默认网格，需要后期更改）
-	inline int GetHoveredIndex(int mouseX, int mouseY) {
-		const int cols = 3;
-		const int cardWith = 220, cardHeight = 280;
-		const int spacing = 30;
-		const int startX = 50, startY = 100;
-
-		for (int i = 0; i < games.size(); i++) {
-			int row = i / cols;
-			int col = i % cols;
-			int x = startX + col * (cardWith + spacing);
-			int y = startY + row * (cardHeight + spacing);
-
-			if (mouseX >= x && mouseX <= x + cardWith && mouseY >= y && mouseY <= y + cardHeight) {
-				return i;
-			}
-		}
-		return -1;
-	}
 public:
+	void DrawGameCard(const GameInfo& game, int x, int y, int width, int height, bool isHovered, bool isSelected);
 	//筛选
 	void categroy();
 	//绘制详情面板
@@ -86,11 +83,7 @@ public:
 	void DrawMainView();
 
 	GameLauncherUI() {
-		// 初始化游戏信息
-		GameInfo game1 = { "1", "Game 1", "cover1.jpg", "game1.exe", time(0), 5, {"Action", "Adventure"} };
-		GameInfo game2 = { "2", "Game 2", "cover2.jpg", "game2.exe", time(0), 3, {"Puzzle", "Strategy"} };
-		games.push_back(game1);
-		games.push_back(game2);
+		LoadSampleData();
 	}
 	void run();
 };
