@@ -1,0 +1,96 @@
+[
+    {
+        "coverPath": "C:/game_covers/witcher3.jpg",
+        "exePath": "C:/games/witcher3/witcher3.exe",
+        "id": "game_001",
+        "lastPlayed": 1689123456,
+        "playCount": 42,
+        "tags": [
+            "RPG",
+            "Open World",
+            "Adventure"
+        ],
+        "title": "The Witcher 3: Wild Hunt"
+    },
+    {
+        "coverPath": "C:/game_covers/stardew.png",
+        "exePath": "C:/games/stardew/Stardew Valley.exe",
+        "id": "game_002",
+        "lastPlayed": 1689234567,
+        "playCount": 87,
+        "tags": [
+            "Simulation",
+            "Farming",
+            "Indie"
+        ],
+        "title": "Stardew Valley"
+    },
+    {
+        "coverPath": "C:/game_covers/doom.jpg",
+        "exePath": "C:/games/doom/DOOMEternalx64.exe",
+        "id": "game_003",
+        "lastPlayed": 1689345678,
+        "playCount": 15,
+        "tags": [
+            "FPS",
+            "Action",
+            "Shooter"
+        ],
+        "title": "DOOM Eternal"
+    },
+  {
+    "coverPath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\resources\\win32\\code_150x150.png",
+    "exePath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+    "id": "vsCode",
+    "lastPlayed": 0,
+    "playCount": 0,
+    "tags": [
+      "sd"
+    ],
+    "title": "vsCode"
+  },
+    {
+        "coverPath": "./R-C.jpg",
+        "exePath": "2",
+        "id": "ww",
+        "lastPlayed": 1748582953,
+        "playCount": 5,
+        "tags": [
+            "2"
+        ],
+        "title": "2"
+    },
+    {
+        "coverPath": "2",
+        "exePath": "2",
+        "id": "ww",
+        "lastPlayed": 1748583032,
+        "playCount": 6,
+        "tags": [
+            "2"
+        ],
+        "title": "2"
+    },
+    {
+        "coverPath": "2",
+        "exePath": "2",
+        "id": "ww",
+        "lastPlayed": 1748583049,
+        "playCount": 7,
+        "tags": [
+            "2"
+        ],
+        "title": "2"
+    },
+    {
+        "coverPath": "2",
+        "exePath": "2",
+        "id": "ww",
+        "lastPlayed": 0,
+        "playCount": 0,
+        "tags": [
+            "2"
+        ],
+        "title": "2"
+    }
+]

@@ -1,11 +1,157 @@
 #include "menu.h"
 #include "dropDown.h"
 #include "add.h"
+#include"json.hpp"
+#include<iostream>
+#include<vector>
 #include <easyx.h>
 #include <algorithm>
 #include <sstream>
-
+#include <fstream>
+#include <shellapi.h>
+const string savePath = "games.json";
 using namespace std;
+using json = nlohmann::json;
+
+void GameLauncherUI::askGameInfo() {
+    cout << "请输入游戏id：" << endl;
+    string id;
+    cin >> id;
+    cout << "请输入游戏名称：" << endl;
+    string title;
+    cin >> title;
+    cout << "请输入游戏封面路径：" << endl;
+    string coverPath;
+    cin >> coverPath;
+    cout << "请输入游戏路径：" << endl;
+    string exePath;
+    cin >> exePath;
+    int playCount = 0;
+    cout << "请输入游戏标签：" << endl;
+    vector<string> tags;
+    string temptags;
+    string temp;
+    cin >> temptags;
+    for (char c : temptags) {
+        if (c == ',') {
+            tags.push_back(temp);
+            temp.clear();
+        }
+        else {
+            temp += c;
+        }
+    }
+    if (!temp.empty()) {
+        tags.push_back(temp);
+    }
+    GameInfo gameinfo;
+    gameinfo.id = id;
+    gameinfo.title = title;
+    gameinfo.coverPath = coverPath;
+    gameinfo.exePath = exePath;
+    gameinfo.playCount = playCount;
+    gameinfo.tags = tags;
+
+	json allGames = json::array();
+    ifstream ifs(savePath);
+    if (ifs.is_open()) {
+        try {
+            ifs >> allGames;
+        }
+        catch (...) {
+            // 文件内容不是有效JSON，创建新数组
+            allGames = json::array();
+        }
+        ifs.close();
+    }
+    json jGame = {
+    { "id", gameinfo.id },
+    { "title", gameinfo.title },
+    { "coverPath", gameinfo.coverPath },
+    { "exePath", gameinfo.exePath },
+    { "lastPlayed", gameinfo.lastPlayed },
+    { "playCount", gameinfo.playCount },
+    { "tags", gameinfo.tags}
+    };
+
+	allGames.push_back(jGame);
+
+	ofstream ofs(savePath);
+	if (ofs.is_open()) {
+		ofs << allGames.dump(4); // 美化输出
+		ofs.close();
+	}
+}
+
+bool GameLauncherUI::LoadGames() {
+	allGames.clear(); // 清空之前的数据
+    ifstream ifs(savePath,ios::binary);
+	if (!ifs.is_open()) {
+		cout << "无法打开游戏数据文件，可能文件不存在或路径错误。" << endl;
+        return false;
+	}
+    try {
+		ifs.seekg(0, ios::end);
+        if (ifs.tellg() == 0) {
+            cout << "游戏数据文件为空，请添加游戏。" << endl;
+			ifs.close();
+        }
+		ifs.seekg(0);
+        json j;
+		ifs >> j;
+	    allGames = j.get<vector<GameInfo>>();
+        return true;
+	}
+	catch (const json::parse_error& e) {
+		cout << "JSON解析错误: " << e.what() << endl;
+	}
+	catch (const json::type_error& e) {
+		cout << "JSON类型错误: " << e.what() << endl;
+	}
+    catch (const std::exception& e) {
+        cout << "其他错误: " << e.what() << endl;
+    }
+    ifs.close();
+    return false;
+}
+
+vector<GameInfo> GameLauncherUI::GetPage(size_t pageIndex) {
+	size_t start = pageIndex * pageSize;
+	size_t end = start + pageSize;
+	if (start >= allGames.size()) {
+		return vector<GameInfo>(); // 返回空向量
+	}
+	end = min(end, allGames.size());
+	return vector<GameInfo>(allGames.begin() + start, allGames.begin() + end);
+}
+
+vector<GameInfo> GameLauncherUI::GetCurrentPage() {
+    return GetPage(currentPage);
+}
+
+size_t GameLauncherUI::pagePlus(size_t currentPage) {
+	if (currentPage * pageSize + pageSize < allGames.size()) {
+		return currentPage + 1;
+	}
+	return currentPage; // 如果已经是最后一页，则不变
+}
+size_t GameLauncherUI::pageSub(size_t currentPage) {
+	if (currentPage > 0) {
+		return currentPage - 1;
+	}
+	return currentPage; // 如果已经是第一页，则不变
+}
+
+void GameLauncherUI::LoadSampleData() {
+    // 这里可以加载一些示例数据
+    if (!LoadGames()) {
+        cout << "加载游戏数据失败" << endl;
+        allGames = {};
+    }
+	// 这里可以加载一些示例数据
+	games = GetCurrentPage();
+	addBtn = new addButton(930, 730, 50, 50);
+}
 
 void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
 {
@@ -24,7 +170,9 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
 
     // 封面大图
     int coverHeight = 200;
-    setfillcolor(RGB(rand() % 155 + 100, rand() % 155 + 100, rand() % 155 + 100));
+    IMAGE coverImage; // 封面图片对象
+	loadimage(&coverImage, game.coverPath.c_str(), panelWidth - 40, coverHeight);
+	putimage(x + 20, y + 60, &coverImage);
     fillrectangle(x + 20, y + 60, x + panelWidth - 20, y + 60 + coverHeight);
 
     // 游戏信息
@@ -54,11 +202,9 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
 
 void GameLauncherUI::run()
 {
-    initgraph(1000, 800);
+    HWND hmain = initgraph(1000, 800);
     BeginBatchDraw();
-
     while (true) {
-        addButton add;
         ExMessage msg;
         while (peekmessage(&msg, EX_MOUSE | EX_KEY)) {
             // 更新悬停状态
@@ -69,7 +215,7 @@ void GameLauncherUI::run()
             const int spacing = 30;
             const int startX = 50;
             const int startY = 100;
-     
+
             // 检查鼠标悬停/点击
             if (msg.message == WM_MOUSEMOVE || msg.message == WM_LBUTTONDOWN) {
                 for (int i = 0; i < games.size(); i++) {
@@ -82,10 +228,8 @@ void GameLauncherUI::run()
                         msg.y >= y && msg.y <= y + cardHeight) {
                         hoveredIndex = i;
 
-                        // 单击选择游戏
+                        // 双击选择游戏
                         if (msg.message == WM_LBUTTONDOWN) {
-                            selectedIndex = i;
-
                             // 双击检测
                             static POINT lastClickPos = { 0, 0 };
                             static DWORD lastClickTime = 0;
@@ -98,46 +242,87 @@ void GameLauncherUI::run()
 
                             if (isDoubleClick) {
                                 showDetails = true;
+                                selectedIndex = i;
                             }
-
                             lastClickTime = currentTime;
                             lastClickPos = { msg.x, msg.y };
                         }
                     }
                 }
+                
             }
+
 
             // 处理详情面板交互
-            if (showDetails && msg.message == WM_LBUTTONDOWN) {
-                int panelWidth = 400, panelHeight = 500;
-                int panelX = (getwidth() - panelWidth) / 2;
-                int panelY = (getheight() - panelHeight) / 2;
+                if (showDetails && msg.message == WM_LBUTTONDOWN) {
+                    int panelWidth = 400, panelHeight = 500;
+                    int panelX = (getwidth() - panelWidth) / 2;
+                    int panelY = (getheight() - panelHeight) / 2;
 
-                // 关闭按钮 (右上角X)
-                if (msg.x >= panelX + panelWidth - 30 && msg.x <= panelX + panelWidth - 10 &&
-                    msg.y >= panelY + 10 && msg.y <= panelY + 30) {
-                    showDetails = false;
+                    // 关闭按钮 (右上角X)
+                    if (msg.x >= panelX + panelWidth - 30 && msg.x <= panelX + panelWidth - 10 &&
+                        msg.y >= panelY + 10 && msg.y <= panelY + 30) {
+                        showDetails = false;
+                       
+                    }
+                    // 启动按钮
+                    else if (msg.x >= panelX + 100 && msg.x <= panelX + 300 &&
+                        msg.y >= panelY + panelHeight - 60 && msg.y <= panelY + panelHeight - 20) {
+                        MessageBox(GetHWnd(), "游戏启动中...", games[selectedIndex].title.c_str(), MB_OK);
+                        string gamePath = games[selectedIndex].exePath;
+                        HINSTANCE result = ShellExecute(NULL, "open", gamePath.c_str(), NULL, NULL, SW_SHOWNORMAL);
+                        if ((int)result > 32) {
+                            ifstream ifs(savePath, ios::binary);
+                            json j;
+                            ifs >> j;
+                            ifs.close();
+                            // 更新游戏数据
+                            j[selectedIndex + 1]["lastPlayed"] = time(NULL);
+                            j[selectedIndex + 1]["playCount"] = j[selectedIndex]["playCount"].get<int>() + 1;
+                            ofstream ofs(savePath, ios::binary);
+                            ofs << j.dump(4); // 美化输出
+                            ofs.close();
+                            games[selectedIndex].lastPlayed = time(NULL);
+                            games[selectedIndex].playCount++;
+                        }
+                        else {
+                            MessageBox(GetHWnd(), "无法启动游戏，请检查路径是否正确。", "错误", MB_OK | MB_ICONERROR);
+                        }
+						showDetails = false; // 启动游戏后关闭详情面板
+                       
+                    }
                 }
-                // 启动按钮
-                else if (msg.x >= panelX + 100 && msg.x <= panelX + 300 &&
-                    msg.y >= panelY + panelHeight - 60 && msg.y <= panelY + panelHeight - 20) {
-                    MessageBox(GetHWnd(), "游戏启动中...", games[selectedIndex].title.c_str(), MB_OK);
+                else if (showDetails)
+                {
+                    continue;
+                }
+
+                // ESC键处理
+                if (msg.message == WM_KEYDOWN && msg.vkcode == VK_ESCAPE) {
+                    if (showDetails) showDetails = false;
+                    else break;
                 }
             }
 
-            // ESC键处理
-            if (msg.message == WM_KEYDOWN && msg.vkcode == VK_ESCAPE) {
-                if (showDetails) showDetails = false;
-                else break;
+            if (addBtn->checkClick(msg.x, msg.y) && msg.message == WM_LBUTTONDOWN) {
+                askGameInfo();
+                LoadGames(); // 重新加载游戏数据
+                games = GetCurrentPage(); // 更新当前页面游戏列表
             }
-            add.addRun(games);
-        }
+            if (msg.message == WM_KEYDOWN && msg.vkcode == VK_RIGHT) {
+                currentPage = pagePlus(currentPage);
+                games = GetCurrentPage();
+            }
+            if (msg.message == WM_KEYDOWN && msg.vkcode == VK_LEFT) {
+                currentPage = pageSub(currentPage);
+                games = GetCurrentPage();
+            }
 
         // 渲染逻辑
         cleardevice();
         DrawMainView();
         if (showDetails && selectedIndex >= 0) {
-            DrawDetailPanel(games[selectedIndex],theme);
+            DrawDetailPanel(games[selectedIndex], theme);
         }
         FlushBatchDraw();
 

@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="add.h" />
+    <ClInclude Include="data.h" />
     <ClInclude Include="dropDown.h" />
     <ClInclude Include="FilterBar.h" />
     <ClInclude Include="menu.h" />

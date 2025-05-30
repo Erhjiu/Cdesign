@@ -9,8 +9,13 @@ void GameLauncherUI::DrawGameCard(const GameInfo& game, int x, int y, int width,
         isHovered ? theme.cardHover : theme.cardBackground;
     DrawRoundRect(x, y, x + width, y + height, 10, bg, RGB(90, 95, 110));
 
-    // 封面图片 (示例中用白色矩形代替)
+    // 封面图片
     int coverHeight = height * 0.7;
+	/*for (GameInfo& game : games) {
+		IMAGE coverImage;
+		loadimage(&coverImage, game.coverPath.c_str(), width - 10, coverHeight - 10);
+		putimage(x + 5, y + 5, &coverImage);
+	}*/
     setfillcolor(RGB(255, 255, 255));
     fillrectangle(x + 5, y + 5, x + width - 5, y + coverHeight - 5);
 
@@ -57,12 +62,10 @@ void GameLauncherUI::DrawMainView()
         DrawGameCard(games[i], x, y, cardWidth, cardHeight,
             i == hoveredIndex, i == selectedIndex);
     }
-	ExMessage msg = getmessage();
-	addButton addBtn(getwidth() - 70, getheight() - 70, 50, 50);
-	bool isAddHovered = addBtn.checkHover(msg.x,msg.y);
-	addBtn.Draw(theme, isAddHovered);
 
     // 筛选标签 (简化版)
     settextstyle(14, 0, "微软雅黑");
     outtextxy(50, getheight() - 50, "筛选: 全部 冒险 竞速 RPG 模拟 动作");
+	// 添加按钮
+	addBtn->Draw(theme);
 }
