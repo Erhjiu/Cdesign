@@ -29,12 +29,7 @@ private:
 	vector<GameInfo> GetPage(size_t pageIndex);
 	bool LoadGames();
 	// »æÖÆÔ²½Ç¾ØÐÎ
-	inline void DrawRoundRect(int x1, int y1, int x2, int y2, int radius, COLORREF fill, COLORREF outline) {
-		setfillcolor(fill);
-		fillroundrect(x1, y1, x2, y2, radius, radius);
-		setlinecolor(outline);
-		roundrect(x1, y1, x2, y2, radius, radius);
-	}
+	inline void DrawRoundRect(int x1, int y1, int x2, int y2, int radius, COLORREF fill, COLORREF outline);
 public:
 	friend void to_json(json& j, const GameInfo& game);
 	friend void from_json(const json& j, GameInfo& game);

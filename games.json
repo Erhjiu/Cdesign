@@ -38,23 +38,23 @@
         ],
         "title": "DOOM Eternal"
     },
-  {
-    "coverPath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\resources\\win32\\code_150x150.png",
-    "exePath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
-    "id": "vsCode",
-    "lastPlayed": 0,
-    "playCount": 0,
-    "tags": [
-      "sd"
-    ],
-    "title": "vsCode"
-  },
+    {
+        "coverPath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\resources\\win32\\code_150x150.png",
+        "exePath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+        "id": "4",
+        "lastPlayed": 1748770382,
+        "playCount": 3,
+        "tags": [
+            "sd"
+        ],
+        "title": "vsCode"
+    },
     {
         "coverPath": "./R-C.jpg",
         "exePath": "2",
         "id": "ww",
-        "lastPlayed": 1748582953,
-        "playCount": 5,
+        "lastPlayed": 1748754361,
+        "playCount": 1,
         "tags": [
             "2"
         ],
