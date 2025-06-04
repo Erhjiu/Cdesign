@@ -9,9 +9,9 @@ void FilterBar::output() {
 	cout << "1";
 }
 
-void FilterBar::loadTags(class GameLauncherUI& a)
+vector<string> FilterBar::loadTags(class GameLauncherUI& a)
 {
-	categories.clear();
+	vector<string> categories;
 	categories.push_back("全部");
 	for (const auto& game : a.allGames)
 	{
@@ -23,13 +23,38 @@ void FilterBar::loadTags(class GameLauncherUI& a)
 			}
 		}
 	}
+	return categories;
 }
 
-void FilterBar::Draw() {
+vector<int>  FilterBar::filter(GameLauncherUI& a, string target) {
+	vector<int> res;
+	vector<vector<string>> tags;
+	for (const auto& game : a.allGames) {
+		tags.push_back(game.tags);
+	}
+	if (target == "全部") {
+		for (int i = 0; i < tags.size(); i++) {
+			res.push_back(i);
+		}
+		return res;
+	}
+	for (int i = 0; i < tags.size(); i++) {
+		for (int j = 0; j < tags[i].size(); j++) {
+			if (tags[i][j] == target) {
+				res.push_back(i);
+			}
+		}
+	}
+	return res;
+}
+
+
+void FilterBar::Draw(GameLauncherUI& a) {
 	int x = 50;
 	int y = 750;
 	int width = 50;
 	int height = 50;
+	vector<string> categories = loadTags(a);
 	settextstyle(16, 0, _T("微软雅黑"));
 	settextcolor(RGB(0, 0, 0));
 	for (size_t i = 0; i < categories.size(); ++i) {
@@ -42,3 +67,6 @@ void FilterBar::Draw() {
 		outtextxy(x + i * (width + 10) + 5, y + 15, categories[i].c_str());
 	}
 }
+
+
+                   
