@@ -1,15 +1,25 @@
 #pragma once
-#include "menu.h"
 #include <easyx.h>
 #include <vector>
+#include <string>
 
+class GameLauncherUI;
 
+using namespace std;
 class FilterBar
 {
-private :
-	vector<string> categories = { "全部" };
+private:
+	vector<std::string> categories;
 	string currentFilter = "全部";
-
-public:
+	void loadTags(GameLauncherUI &a);
 	void Draw();
+	void output();
+public:
+	FilterBar(GameLauncherUI &a)
+	{
+		loadTags(a);
+		Draw();
+		output();
+	}
+	void handleMouseClick(int x, int y);
 };

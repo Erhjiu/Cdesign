@@ -9,6 +9,7 @@
 #include <sstream>
 #include <fstream>
 #include <shellapi.h>
+#include "FilterBar.h"
 const string savePath = "games.json";
 using namespace std;
 using json = nlohmann::json;
@@ -19,6 +20,53 @@ inline void GameLauncherUI::DrawRoundRect(int x1, int y1, int x2, int y2, int ra
     fillroundrect(x1, y1, x2, y2, radius, radius);
     setlinecolor(outline);
     roundrect(x1, y1, x2, y2, radius, radius);
+}
+
+GameLauncherUI::GameLauncherUI()
+{
+    initgraph(1000, 800);
+    // 初始化成员变量
+    selectedIndex = -1;
+    hoveredIndex = -1;
+    showDetails = false;
+    addBtn = nullptr;
+    currentPage = 0;
+    pageSize = 6;
+    filterBar = nullptr;
+
+    // 加载示例数据
+    LoadSampleData();
+
+    // 创建FilterBar对象
+    filterBar = new FilterBar(*this);
+}
+
+GameLauncherUI::~GameLauncherUI()
+{
+    // 清理资源
+    if (addBtn)
+    {
+        delete addBtn;
+        addBtn = nullptr;
+    }
+
+    if (filterBar)
+    {
+        delete filterBar;
+        filterBar = nullptr;
+    }
+
+    // 清空容器
+    games.clear();
+    allGames.clear();
+
+    // 重置状态
+    selectedIndex = -1;
+    hoveredIndex = -1;
+    showDetails = false;
+    currentPage = 0;
+    pageSize = 6;
+    closegraph();
 }
 
 
@@ -200,18 +248,18 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
 
     // 封面大图
     int coverHeight = 200;
-	IMAGE coverImage;
-	if (game.coverPath.empty())
-	{
-		setfillcolor(theme.cardBackground);
-		fillrectangle(x+5, y + 60, x + panelWidth-5, y + 60 + coverHeight);
-	}
-	else
-	{
-		coverImage = IMAGE();
-	}
-	loadimage(&coverImage, game.coverPath.c_str(), panelWidth-10, coverHeight, true);
-	putimage(x+5, y + 60, &coverImage);
+    IMAGE coverImage;
+    if (game.coverPath.empty())
+    {
+        setfillcolor(theme.cardBackground);
+        fillrectangle(x + 5, y + 60, x + panelWidth - 5, y + 60 + coverHeight);
+    }
+    else
+    {
+        coverImage = IMAGE();
+    }
+    loadimage(&coverImage, game.coverPath.c_str(), panelWidth - 10, coverHeight, true);
+    putimage(x + 5, y + 60, &coverImage);
     // 游戏信息
     settextstyle(20, 0, "微软雅黑");
     std::ostringstream info;
@@ -240,7 +288,7 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
 
 void GameLauncherUI::run()
 {
-    HWND hmain = initgraph(1000, 800);
+
     BeginBatchDraw();
 
     while (true)
@@ -391,5 +439,6 @@ void GameLauncherUI::run()
     }
 
     EndBatchDraw();
-    closegraph();
+
 }
+
