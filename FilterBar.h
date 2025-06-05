@@ -16,8 +16,9 @@ public:
 	int x = 50;
 	int y = 750;
 	int width = 100;
-	int height = 50;
+	int height = 30;
 	int tagIndex = 0;
+	int currentPage = 1;		  // 添加当前页码
 	bool isDoubleClicked = false; // 添加双击状态标记
 	vector<string> currentTags;
 	vector<string> loadTags();

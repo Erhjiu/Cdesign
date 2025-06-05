@@ -1,12 +1,33 @@
 #include <stdio.h>
 #include <easyx.h>
 #include "menu.h"
+#include "data.h"
+#include <string>
+
 int sign = 1;
 int set = 0;
-int page = 1;
+int page = 0;
 int max_page;
 int game_num;
 GameInfo games[100];
+
+// 视图模式枚举
+enum ViewMode
+{
+	GRID_VIEW,
+	LIST_VIEW
+};
+
+// 列表视图的常量
+namespace ListLayout
+{
+	const int ITEM_HEIGHT = 40;
+	const int START_X = 50;
+	const int START_Y = 100;
+	const int LIST_WIDTH = 900;
+	const int ITEMS_PER_PAGE = 16;
+}
+
 void lista(int set)
 {
 	cleardevice();
@@ -135,50 +156,104 @@ void display_change()
 		lista(set);
 	}
 }
-// 判断是否翻页，并记录页数，刷新起点
-void page_up_or_down()
+
+// 绘制视图切换按钮
+void DrawViewToggleButton(int x, int y, ViewMode currentMode)
 {
-	ExMessage msg = {0};
-	while (1)
+	// 绘制按钮背景
+	setfillcolor(RGB(160, 160, 160));
+	setlinecolor(RGB(240, 240, 240));
+	fillroundrect(x, y, x + 30, y + 20, 5, 5);
+
+	if (currentMode == GRID_VIEW)
 	{
-		if (peekmessage(&msg, EX_KEY))
+		// 绘制网格图标
+		for (int i = 0; i < 2; i++)
 		{
-			if (msg.message == WM_KEYDOWN)
+			for (int j = 0; j < 2; j++)
 			{
-				if (msg.vkcode == VK_LEFT)
-				{
-					page--;
-					if (page <= 0)
-					{
-						break;
-					}
-					if (sign)
-					{
-						set = set - 6;
-					}
-					else if (!sign)
-					{
-						set = set - 16;
-					}
-				}
-				else if (msg.vkcode == VK_RIGHT)
-				{
-					page++;
-					if (page > max_page)
-					{
-						break;
-					}
-					if (sign)
-					{
-						set = set + 6;
-					}
-					else if (!sign)
-					{
-						set = set + 16;
-					}
-				}
+				rectangle(x + 5 + j * 10, y + 5 + i * 10, x + 12 + j * 10, y + 12 + i * 10);
 			}
 		}
-		display_change();
 	}
+	else
+	{
+		// 绘制列表图标
+		for (int i = 0; i < 3; i++)
+		{
+			line(x + 5, y + 5 + i * 6, x + 25, y + 5 + i * 6);
+		}
+	}
+}
+
+// 绘制列表视图中的单个项目
+void DrawListItem(const GameInfo &game, int x, int y, bool isHovered, bool isSelected)
+{
+	// 绘制项目背景
+	COLORREF bgColor = isSelected ? RGB(70, 130, 180) : isHovered ? RGB(60, 60, 70)
+																  : RGB(45, 45, 55);
+	setfillcolor(bgColor);
+	solidrectangle(x, y, x + ListLayout::LIST_WIDTH, y + ListLayout::ITEM_HEIGHT);
+
+	// 绘制游戏标题
+	settextcolor(RGB(240, 240, 240));
+	settextstyle(20, 0, "微软雅黑");
+	outtextxy(x + 20, y + 10, game.title.c_str());
+
+	// 绘制游玩次数
+	char playInfo[32];
+	sprintf_s(playInfo, "游玩: %d次", game.playCount);
+	outtextxy(x + ListLayout::LIST_WIDTH - 150, y + 10, playInfo);
+}
+
+// 绘制列表视图
+void DrawListView(const std::vector<GameInfo> &games, int hoveredIndex, int selectedIndex, int startIndex)
+{
+	int y = ListLayout::START_Y;
+
+	for (int i = startIndex; i < min(startIndex + ListLayout::ITEMS_PER_PAGE, (int)games.size()); i++)
+	{
+		DrawListItem(games[i],
+					 ListLayout::START_X,
+					 y,
+					 i == hoveredIndex,
+					 i == selectedIndex);
+		y += ListLayout::ITEM_HEIGHT;
+	}
+}
+
+// 检查视图切换按钮点击
+bool CheckViewToggleClick(int mouseX, int mouseY)
+{
+	return mouseX >= 800 && mouseX <= 830 &&
+		   mouseY >= 30 && mouseY <= 50;
+}
+
+// 获取列表视图中被点击的项目索引
+int GetListItemIndex(int mouseX, int mouseY, int startIndex)
+{
+	// 检查是否在列表区域内
+	if (mouseX < ListLayout::START_X ||
+		mouseX > ListLayout::START_X + ListLayout::LIST_WIDTH ||
+		mouseY < ListLayout::START_Y)
+	{
+		return -1;
+	}
+
+	// 计算相对于列表起始位置的偏移
+	int relativeY = mouseY - ListLayout::START_Y;
+
+	// 计算点击的是第几个项目
+	int clickedItem = relativeY / ListLayout::ITEM_HEIGHT;
+
+	// 计算实际的项目索引（考虑当前页的起始索引）
+	int actualIndex = startIndex + clickedItem;
+
+	// 确保索引在有效范围内
+	if (clickedItem >= 0 && clickedItem < ListLayout::ITEMS_PER_PAGE)
+	{
+		return actualIndex;
+	}
+
+	return -1;
 }
