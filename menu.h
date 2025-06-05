@@ -7,7 +7,7 @@
 #include <ctime>
 #include <iostream>
 
-// Ç°ÏòÉùÃ÷
+// å‰å‘å£°æ˜
 class FilterBar;
 
 using namespace std;
@@ -18,16 +18,16 @@ private:
 	vector<GameInfo> games;
 	vector<GameInfo> allGames;
 	UITheme theme;
-	// É¸Ñ¡Æ÷
-	string filter = "È«²¿";
-	// Ñ¡Ôñ·½Ê½
+	// ç­›é€‰å™¨
+	string filter = "å…¨éƒ¨";
+	// é€‰æ‹©æ–¹å¼
 	int selectedIndex = -1;
 	int hoveredIndex = -1;
 	bool showDetails = false;
 	addButton *addBtn;
 	size_t currentPage = 0;
 	size_t pageSize = 6;
-	FilterBar *filterBar; // Ìí¼ÓFilterBarÖ¸Õë³ÉÔ±
+	FilterBar *filterBar; // æ·»åŠ FilterBaræŒ‡é’ˆæˆå‘˜
 
 	void LoadSampleData();
 	vector<GameInfo> GetPage(size_t pageIndex);
@@ -35,18 +35,18 @@ private:
 	friend class FilterBar;
 
 public:
-	// »æÖÆÔ²½Ç¾ØĞÎ
+	// ç»˜åˆ¶åœ†è§’çŸ©å½¢
 	inline void DrawRoundRect(int x1, int y1, int x2, int y2, int radius, COLORREF fill, COLORREF outline);
 	void DrawGameCard(const GameInfo &game, int x, int y, int width, int height, bool isHovered, bool isSelected);
-	// É¸Ñ¡
+	// ç­›é€‰
 	void categroy();
 	vector<GameInfo> GetCurrentPage();
 	size_t pagePlus(size_t currentPage);
 	size_t pageSub(size_t currentPage);
 
-	// »æÖÆÏêÇéÃæ°å
+	// ç»˜åˆ¶è¯¦æƒ…é¢æ¿
 	void DrawDetailPanel(const GameInfo &game, const UITheme &theme);
-	// »æÖÆÖ÷ÊÓÍ¼
+	// ç»˜åˆ¶ä¸»è§†å›¾
 	void DrawMainView();
 
 	void askGameInfo();

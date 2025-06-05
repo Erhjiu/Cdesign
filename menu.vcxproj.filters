@@ -30,7 +30,7 @@
     <ClCompile Include="add.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="dropDown.cpp">
+    <ClCompile Include="display_change.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,13 +41,7 @@
     <ClInclude Include="add.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="range.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FilterBar.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="dropDown.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="data.h">

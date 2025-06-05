@@ -1,5 +1,4 @@
-#include "menu.h"
-#include "dropDown.h"
+ï»¿#include "menu.h"
 #include "add.h"
 #include "json.hpp"
 #include <iostream>
@@ -25,7 +24,7 @@ inline void GameLauncherUI::DrawRoundRect(int x1, int y1, int x2, int y2, int ra
 GameLauncherUI::GameLauncherUI()
 {
     initgraph(1000, 800);
-    // ³õÊ¼»¯³ÉÔ±±äÁ¿
+    // åˆå§‹åŒ–æˆå‘˜å˜é‡
     selectedIndex = -1;
     hoveredIndex = -1;
     showDetails = false;
@@ -34,16 +33,16 @@ GameLauncherUI::GameLauncherUI()
     pageSize = 6;
     filterBar = nullptr;
 
-    // ¼ÓÔØÊ¾ÀıÊı¾İ
+    // åŠ è½½ç¤ºä¾‹æ•°æ®
     LoadSampleData();
 
-    // ´´½¨FilterBar¶ÔÏó
+    // åˆ›å»ºFilterBarå¯¹è±¡
     filterBar = new FilterBar(*this);
 }
 
 GameLauncherUI::~GameLauncherUI()
 {
-    // ÇåÀí×ÊÔ´
+    // æ¸…ç†èµ„æº
     if (addBtn)
     {
         delete addBtn;
@@ -56,11 +55,11 @@ GameLauncherUI::~GameLauncherUI()
         filterBar = nullptr;
     }
 
-    // Çå¿ÕÈİÆ÷
+    // æ¸…ç©ºå®¹å™¨
     games.clear();
     allGames.clear();
 
-    // ÖØÖÃ×´Ì¬
+    // é‡ç½®çŠ¶æ€
     selectedIndex = -1;
     hoveredIndex = -1;
     showDetails = false;
@@ -69,23 +68,22 @@ GameLauncherUI::~GameLauncherUI()
     closegraph();
 }
 
-
 void GameLauncherUI::askGameInfo()
 {
-    cout << "ÇëÊäÈëÓÎÏ·id:" << endl;
+    cout << "è¯·è¾“å…¥æ¸¸æˆid:" << endl;
     string id;
     cin >> id;
-    cout << "ÇëÊäÈëÓÎÏ·Ãû³Æ£º" << endl;
+    cout << "è¯·è¾“å…¥æ¸¸æˆåç§°ï¼š" << endl;
     string title;
     cin >> title;
-    cout << "ÇëÊäÈëÓÎÏ··âÃæÂ·¾¶£º" << endl;
+    cout << "è¯·è¾“å…¥æ¸¸æˆå°é¢è·¯å¾„ï¼š" << endl;
     string coverPath;
     cin >> coverPath;
-    cout << "ÇëÊäÈëÓÎÏ·Â·¾¶£º" << endl;
+    cout << "è¯·è¾“å…¥æ¸¸æˆè·¯å¾„ï¼š" << endl;
     string exePath;
     cin >> exePath;
     int playCount = 0;
-    cout << "ÇëÊäÈëÓÎÏ·±êÇ©£º" << endl;
+    cout << "è¯·è¾“å…¥æ¸¸æˆæ ‡ç­¾ï¼š" << endl;
     vector<string> tags;
     string temptags;
     string temp;
@@ -124,7 +122,7 @@ void GameLauncherUI::askGameInfo()
         }
         catch (...)
         {
-            // ÎÄ¼şÄÚÈİ²»ÊÇÓĞĞ§JSON£¬´´½¨ĞÂÊı×é
+            // æ–‡ä»¶å†…å®¹ä¸æ˜¯æœ‰æ•ˆJSONï¼Œåˆ›å»ºæ–°æ•°ç»„
             allGames = json::array();
         }
         ifs.close();
@@ -143,18 +141,18 @@ void GameLauncherUI::askGameInfo()
     ofstream ofs(savePath);
     if (ofs.is_open())
     {
-        ofs << allGames.dump(4); // ÃÀ»¯Êä³ö
+        ofs << allGames.dump(4); // ç¾åŒ–è¾“å‡º
         ofs.close();
     }
 }
 
 bool GameLauncherUI::LoadGames()
 {
-    allGames.clear(); // Çå¿ÕÖ®Ç°µÄÊı¾İ
+    allGames.clear(); // æ¸…ç©ºä¹‹å‰çš„æ•°æ®
     ifstream ifs(savePath, ios::binary);
     if (!ifs.is_open())
     {
-        cout << "ÎŞ·¨´ò¿ªÓÎÏ·Êı¾İÎÄ¼ş£¬¿ÉÄÜÎÄ¼ş²»´æÔÚ»òÂ·¾¶´íÎó¡£" << endl;
+        cout << "æ— æ³•æ‰“å¼€æ¸¸æˆæ•°æ®æ–‡ä»¶ï¼Œå¯èƒ½æ–‡ä»¶ä¸å­˜åœ¨æˆ–è·¯å¾„é”™è¯¯ã€‚" << endl;
         return false;
     }
     try
@@ -162,7 +160,7 @@ bool GameLauncherUI::LoadGames()
         ifs.seekg(0, ios::end);
         if (ifs.tellg() == 0)
         {
-            cout << "ÓÎÏ·Êı¾İÎÄ¼şÎª¿Õ£¬ÇëÌí¼ÓÓÎÏ·¡£" << endl;
+            cout << "æ¸¸æˆæ•°æ®æ–‡ä»¶ä¸ºç©ºï¼Œè¯·æ·»åŠ æ¸¸æˆã€‚" << endl;
             ifs.close();
         }
         ifs.seekg(0);
@@ -173,15 +171,15 @@ bool GameLauncherUI::LoadGames()
     }
     catch (const json::parse_error &e)
     {
-        cout << "JSON½âÎö´íÎó: " << e.what() << endl;
+        cout << "JSONè§£æé”™è¯¯: " << e.what() << endl;
     }
     catch (const json::type_error &e)
     {
-        cout << "JSONÀàĞÍ´íÎó: " << e.what() << endl;
+        cout << "JSONç±»å‹é”™è¯¯: " << e.what() << endl;
     }
     catch (const std::exception &e)
     {
-        cout << "ÆäËû´íÎó: " << e.what() << endl;
+        cout << "å…¶ä»–é”™è¯¯: " << e.what() << endl;
     }
     ifs.close();
     return false;
@@ -193,7 +191,7 @@ vector<GameInfo> GameLauncherUI::GetPage(size_t pageIndex)
     size_t end = start + pageSize;
     if (start >= allGames.size())
     {
-        return vector<GameInfo>(); // ·µ»Ø¿ÕÏòÁ¿
+        return vector<GameInfo>(); // è¿”å›ç©ºå‘é‡
     }
     end = min(end, allGames.size());
     return vector<GameInfo>(allGames.begin() + start, allGames.begin() + end);
@@ -225,7 +223,7 @@ void GameLauncherUI::LoadSampleData()
 {
     if (!LoadGames())
     {
-        cout << "¼ÓÔØÓÎÏ·Êı¾İÊ§°Ü" << endl;
+        cout << "åŠ è½½æ¸¸æˆæ•°æ®å¤±è´¥" << endl;
         allGames = {};
     }
     games = GetCurrentPage();
@@ -238,15 +236,15 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
     int panelHeight = 500;
     int x = (getwidth() - panelWidth) / 2;
     int y = (getheight() - panelHeight) / 2;
-    // ±³¾°Ãæ°å
+    // èƒŒæ™¯é¢æ¿
     DrawRoundRect(x, y, x + panelWidth, y + panelHeight, 15, theme.cardBackground, theme.accent);
 
-    // ±êÌâ
+    // æ ‡é¢˜
     settextcolor(theme.text);
-    settextstyle(24, 0, "Î¢ÈíÑÅºÚ");
+    settextstyle(24, 0, "å¾®è½¯é›…é»‘");
     outtextxy(x + 20, y + 20, game.title.c_str());
 
-    // ·âÃæ´óÍ¼
+    // å°é¢å¤§å›¾
     int coverHeight = 200;
     IMAGE coverImage;
     if (game.coverPath.empty())
@@ -260,12 +258,12 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
     }
     loadimage(&coverImage, game.coverPath.c_str(), panelWidth - 10, coverHeight, true);
     putimage(x + 5, y + 60, &coverImage);
-    // ÓÎÏ·ĞÅÏ¢
-    settextstyle(20, 0, "Î¢ÈíÑÅºÚ");
+    // æ¸¸æˆä¿¡æ¯
+    settextstyle(20, 0, "å¾®è½¯é›…é»‘");
     std::ostringstream info;
-    info << "ÉÏ´ÎÓÎÍæ: " << game.GetLastPlayedStr() << "\n"
-         << "ÓÎÍæ´ÎÊı: " << game.playCount << "\n"
-         << "±êÇ©: ";
+    info << "ä¸Šæ¬¡æ¸¸ç©: " << game.GetLastPlayedStr() << "\n"
+         << "æ¸¸ç©æ¬¡æ•°: " << game.playCount << "\n"
+         << "æ ‡ç­¾: ";
 
     for (const auto &tag : game.tags)
     {
@@ -275,12 +273,12 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
     RECT infoRect = {x + 20, y + 280, x + panelWidth - 20, y + 380};
     drawtext(info.str().c_str(), &infoRect, DT_LEFT | DT_TOP | DT_WORDBREAK);
 
-    // °´Å¥
+    // æŒ‰é’®
     DrawRoundRect(x + 100, y + panelHeight - 60, x + 300, y + panelHeight - 20, 10, theme.accent, theme.accent);
     settextcolor(RGB(255, 255, 255));
-    outtextxy(x + 170, y + panelHeight - 50, "Æô¶¯ÓÎÏ·");
+    outtextxy(x + 170, y + panelHeight - 50, "å¯åŠ¨æ¸¸æˆ");
 
-    // ¹Ø±Õ°´Å¥
+    // å…³é—­æŒ‰é’®
     setlinecolor(theme.textSecondary);
     line(x + panelWidth - 30, y + 20, x + panelWidth - 20, y + 30);
     line(x + panelWidth - 20, y + 20, x + panelWidth - 30, y + 30);
@@ -288,7 +286,6 @@ void GameLauncherUI::DrawDetailPanel(const GameInfo &game, const UITheme &theme)
 
 void GameLauncherUI::run()
 {
-
     BeginBatchDraw();
 
     while (true)
@@ -296,7 +293,7 @@ void GameLauncherUI::run()
         ExMessage msg;
         while (peekmessage(&msg, EX_MOUSE | EX_KEY))
         {
-            // ¸üĞÂĞüÍ£×´Ì¬
+            // æ›´æ–°æ‚¬åœçŠ¶æ€
             hoveredIndex = -1;
             const int cols = 3;
             const int cardWidth = 220;
@@ -305,7 +302,7 @@ void GameLauncherUI::run()
             const int startX = 50;
             const int startY = 100;
 
-            // ¼ì²éÊó±êĞüÍ£/µã»÷
+            // æ£€æŸ¥é¼ æ ‡æ‚¬åœ/ç‚¹å‡»
             if (msg.message == WM_MOUSEMOVE || msg.message == WM_LBUTTONDOWN)
             {
                 for (int i = 0; i < games.size(); i++)
@@ -320,15 +317,15 @@ void GameLauncherUI::run()
                     {
                         hoveredIndex = i;
 
-                        // Ë«»÷Ñ¡ÔñÓÎÏ·
+                        // åŒå‡»é€‰æ‹©æ¸¸æˆ
                         if (msg.message == WM_LBUTTONDOWN)
                         {
-                            // Ë«»÷¼ì²â
+                            // åŒå‡»æ£€æµ‹
                             static POINT lastClickPos = {0, 0};
                             static DWORD lastClickTime = 0;
                             DWORD currentTime = GetTickCount();
 
-                            // ¼ì²éÊÇ·ñÔÚÏàÍ¬Î»ÖÃÇÒÊ±¼ä¼ä¸ô¶Ì
+                            // æ£€æŸ¥æ˜¯å¦åœ¨ç›¸åŒä½ç½®ä¸”æ—¶é—´é—´éš”çŸ­
                             bool isDoubleClick = (currentTime - lastClickTime < 300) &&
                                                  (abs(msg.x - lastClickPos.x) < 10) &&
                                                  (abs(msg.y - lastClickPos.y) < 10);
@@ -345,25 +342,25 @@ void GameLauncherUI::run()
                 }
             }
 
-            // ´¦ÀíÏêÇéÃæ°å½»»¥
+            // å¤„ç†è¯¦æƒ…é¢æ¿äº¤äº’
             if (showDetails && msg.message == WM_LBUTTONDOWN)
             {
                 int panelWidth = 400, panelHeight = 500;
                 int panelX = (getwidth() - panelWidth) / 2;
                 int panelY = (getheight() - panelHeight) / 2;
 
-                // ¹Ø±Õ°´Å¥ (ÓÒÉÏ½ÇX)
+                // å…³é—­æŒ‰é’® (å³ä¸Šè§’X)
                 if (msg.x >= panelX + panelWidth - 30 && msg.x <= panelX + panelWidth - 10 &&
                     msg.y >= panelY + 10 && msg.y <= panelY + 30)
                 {
                     showDetails = false;
-                    selectedIndex = -1; // Çå³ıÑ¡ÖĞ×´Ì¬
+                    selectedIndex = -1; // æ¸…é™¤é€‰ä¸­çŠ¶æ€
                 }
-                // Æô¶¯°´Å¥
+                // å¯åŠ¨æŒ‰é’®
                 else if (msg.x >= panelX + 100 && msg.x <= panelX + 300 &&
                          msg.y >= panelY + panelHeight - 60 && msg.y <= panelY + panelHeight - 20)
                 {
-                    MessageBox(GetHWnd(), "ÓÎÏ·Æô¶¯ÖĞ...", games[selectedIndex].title.c_str(), MB_OK);
+                    MessageBox(GetHWnd(), "æ¸¸æˆå¯åŠ¨ä¸­...", games[selectedIndex].title.c_str(), MB_OK);
                     string gamePath = games[selectedIndex].exePath;
                     HINSTANCE result = ShellExecute(NULL, "open", gamePath.c_str(), NULL, NULL, SW_SHOWNORMAL);
                     if ((int)result > 32)
@@ -372,20 +369,20 @@ void GameLauncherUI::run()
                         json j;
                         ifs >> j;
                         ifs.close();
-                        // ¸üĞÂÓÎÏ·Êı¾İ
+                        // æ›´æ–°æ¸¸æˆæ•°æ®
                         j[selectedIndex]["lastPlayed"] = time(NULL);
                         j[selectedIndex]["playCount"] = j[selectedIndex]["playCount"].get<int>() + 1;
                         ofstream ofs(savePath, ios::binary);
-                        ofs << j.dump(4); // ÃÀ»¯Êä³ö
+                        ofs << j.dump(4); // ç¾åŒ–è¾“å‡º
                         ofs.close();
                         games[selectedIndex].lastPlayed = time(NULL);
                         games[selectedIndex].playCount++;
                     }
                     else
                     {
-                        MessageBox(GetHWnd(), "ÎŞ·¨Æô¶¯ÓÎÏ·£¬Çë¼ì²éÂ·¾¶ÊÇ·ñÕıÈ·¡£", "´íÎó", MB_OK | MB_ICONERROR);
+                        MessageBox(GetHWnd(), "æ— æ³•å¯åŠ¨æ¸¸æˆï¼Œè¯·æ£€æŸ¥è·¯å¾„æ˜¯å¦æ­£ç¡®ã€‚", "é”™è¯¯", MB_OK | MB_ICONERROR);
                     }
-                    showDetails = false; // Æô¶¯ÓÎÏ·ºó¹Ø±ÕÏêÇéÃæ°å
+                    showDetails = false; // å¯åŠ¨æ¸¸æˆåå…³é—­è¯¦æƒ…é¢æ¿
                 }
             }
             else if (showDetails)
@@ -393,7 +390,7 @@ void GameLauncherUI::run()
                 continue;
             }
 
-            // ESC¼ü´¦Àí
+            // ESCé”®å¤„ç†
             if (msg.message == WM_KEYDOWN && msg.vkcode == VK_ESCAPE)
             {
                 if (showDetails)
@@ -406,8 +403,8 @@ void GameLauncherUI::run()
         if (addBtn->checkClick(msg.x, msg.y) && msg.message == WM_LBUTTONDOWN)
         {
             askGameInfo();
-            LoadGames();              // ÖØĞÂ¼ÓÔØÓÎÏ·Êı¾İ
-            games = GetCurrentPage(); // ¸üĞÂµ±Ç°Ò³ÃæÓÎÏ·ÁĞ±í
+            LoadGames();              // é‡æ–°åŠ è½½æ¸¸æˆæ•°æ®
+            games = GetCurrentPage(); // æ›´æ–°å½“å‰é¡µé¢æ¸¸æˆåˆ—è¡¨
         }
         if (msg.message == WM_KEYDOWN && msg.vkcode == VK_RIGHT)
         {
@@ -419,7 +416,7 @@ void GameLauncherUI::run()
             currentPage = pageSub(currentPage);
             games = GetCurrentPage();
         }
-        // äÖÈ¾Âß¼­
+        // æ¸²æŸ“é€»è¾‘
         cleardevice();
         DrawMainView();
         if (showDetails && selectedIndex >= 0)
@@ -428,17 +425,15 @@ void GameLauncherUI::run()
         }
         FlushBatchDraw();
 
-        // Ğ¡·ùÑÓ³Ù·ÀÖ¹CPUÕ¼ÓÃ¹ı¸ß
+        // å°å¹…å»¶è¿Ÿé˜²æ­¢CPUå ç”¨è¿‡é«˜
         static DWORD lastTime = GetTickCount();
         DWORD currentTime = GetTickCount();
         if (currentTime - lastTime < 10)
         {
-            Sleep(10 - (currentTime - lastTime)); // ~100FPSÉÏÏŞ
+            Sleep(10 - (currentTime - lastTime)); // ~100FPSä¸Šé™
         }
         lastTime = currentTime;
     }
 
     EndBatchDraw();
-
 }
-

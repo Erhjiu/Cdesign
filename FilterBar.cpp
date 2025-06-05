@@ -5,61 +5,74 @@
 #include <algorithm>
 #include <unordered_map>
 
-using namespace std; 
+using namespace std;
 
-void FilterBar::output() {
+void FilterBar::output()
+{
 	cout << "1";
 }
 
-
-bool compare(const pair<string, int>& a, const pair<string, int>& b) {
-	return a.second > b.second; // ½µĞòÅÅĞò
+bool compare(const pair<string, int> &a, const pair<string, int> &b)
+{
+	return a.second > b.second; // é™åºæ’åº
 }
 
-
-vector<string> FilterBar::loadTags(class GameLauncherUI& a)
+vector<string> FilterBar::loadTags(class GameLauncherUI &a)
 {
 	vector<string> categories;
-	categories.push_back("È«²¿");
-	for (const auto& game : a.allGames)
+	categories.push_back("ALL");
+	unordered_map<string, int> countTags;
+	for (const auto &game : a.allGames)
 	{
-		for (const auto& tag : game.tags)
+		for (const auto &tag : game.tags)
 		{
-			if (find(categories.begin(), categories.end(), tag) == categories.end())
+			auto it = countTags.find(tag);
+			if (it == countTags.end())
 			{
-				categories.push_back(tag);
+				countTags[tag] = 1;
+			}
+			else
+			{
+				countTags[tag]++;
 			}
 		}
 	}
-	// Ê¹ÓÃunordered_mapÍ³¼ÆÃ¿¸ö×Ö·û´®µÄ³öÏÖ´ÎÊı
-	unordered_map<string, int> countMap;
-	for (const auto& str : categories) {
-		countMap[str]++;
+	// å°†mapä¸­çš„å†…å®¹è½¬æ¢ä¸ºvector<pair<string, int>>ï¼Œä»¥ä¾¿æ’åº
+	vector<pair<string, int>> Vec(countTags.begin(), countTags.end());
+
+	// æŒ‰ç…§å‡ºç°æ¬¡æ•°ä»å¤§åˆ°å°æ’åº
+	sort(Vec.begin(), Vec.end(), compare);
+	int Size = min(Vec.size(), 6);
+	for (int i = 0; i < Size; i++)
+	{
+		pair<string, int> tagPair = Vec[i];
+		categories.push_back(tagPair.first);
 	}
-
-	// ½«mapÖĞµÄÄÚÈİ×ª»»Îªvector<pair<string, int>>£¬ÒÔ±ãÅÅĞò
-	vector<pair<string, int>> countVector(countMap.begin(), countMap.end());
-
-	// °´ÕÕ³öÏÖ´ÎÊı´Ó´óµ½Ğ¡ÅÅĞò
-	sort(countVector.begin(), countVector.end(), compare);
 	return categories;
 }
 
-vector<int>  FilterBar::filter(GameLauncherUI& a, string target) {
+vector<int> FilterBar::filter(GameLauncherUI &a, string target)
+{
 	vector<int> res;
 	vector<vector<string>> tags;
-	for (const auto& game : a.allGames) {
+	for (const auto &game : a.allGames)
+	{
 		tags.push_back(game.tags);
 	}
-	if (target == "È«²¿") {
-		for (int i = 0; i < tags.size(); i++) {
+	if (target == "å…¨éƒ¨")
+	{
+		for (int i = 0; i < tags.size(); i++)
+		{
 			res.push_back(i);
 		}
 		return res;
 	}
-	for (int i = 0; i < tags.size(); i++) {
-		for (int j = 0; j < tags[i].size(); j++) {
-			if (tags[i][j] == target) {
+	for (int i = 0; i < tags.size(); i++)
+	{
+		for (int j = 0; j < tags[i].size(); j++)
+		{
+			if (tags[i][j] == target)
+			{
 				res.push_back(i);
 			}
 		}
@@ -67,25 +80,24 @@ vector<int>  FilterBar::filter(GameLauncherUI& a, string target) {
 	return res;
 }
 
-
-void FilterBar::Draw(GameLauncherUI& a) {
+void FilterBar::Draw(GameLauncherUI &a)
+{
 	int x = 50;
 	int y = 750;
-	int width = 50;
+	int width = 100;
 	int height = 50;
 	vector<string> categories = loadTags(a);
-	settextstyle(16, 0, _T("Î¢ÈíÑÅºÚ"));
+	settextstyle(16, 0, _T("Arial"));
 	settextcolor(RGB(0, 0, 0));
-	for (size_t i = 0; i < categories.size(); ++i) {
+	for (size_t i = 0; i < categories.size(); ++i)
+	{
 		setfillcolor(RGB(200, 200, 200));
-		if (currentFilter == categories[i]) {
-			setfillcolor(RGB(100, 150, 255)); // ¸ßÁÁÑÕÉ«
+		if (currentFilter == categories[i])
+		{
+			setfillcolor(RGB(100, 150, 255)); // é«˜äº®é¢œè‰²
 		}
-		fillrectangle(x + i * (width + 10), y, x + i * (width + 10) + width, y + height);
+		a.DrawRoundRect(x + i * (width + 10), y, x + i * (width + 10) + width, y + height, 10, RGB(65, 70, 85), RGB(65, 70, 85));
 		settextcolor(RGB(0, 0, 0));
 		outtextxy(x + i * (width + 10) + 5, y + 15, categories[i].c_str());
 	}
 }
-
-
-                   

@@ -45,7 +45,9 @@
         "lastPlayed": 1748770382,
         "playCount": 3,
         "tags": [
-            "sd"
+            "竞技",
+            "编程",
+            "代码"
         ],
         "title": "vsCode"
     },
@@ -56,41 +58,22 @@
         "lastPlayed": 1748754361,
         "playCount": 1,
         "tags": [
-            "2"
+            "竞技",
+            "二次元",
+            "奇幻"
         ],
-        "title": "2"
+        "title": "maomao"
     },
     {
-        "coverPath": "2",
+        "coverPath": "./R-C.jpg",
         "exePath": "2",
         "id": "ww",
-        "lastPlayed": 1748583032,
-        "playCount": 6,
+        "lastPlayed": 1748754361,
+        "playCount": 1,
         "tags": [
-            "2"
+            "二次元",
+            "奇幻"
         ],
-        "title": "2"
-    },
-    {
-        "coverPath": "2",
-        "exePath": "2",
-        "id": "ww",
-        "lastPlayed": 1748583049,
-        "playCount": 7,
-        "tags": [
-            "2"
-        ],
-        "title": "2"
-    },
-    {
-        "coverPath": "2",
-        "exePath": "2",
-        "id": "ww",
-        "lastPlayed": 0,
-        "playCount": 0,
-        "tags": [
-            "2"
-        ],
-        "title": "2"
+        "title": "maomao"
     }
 ]

@@ -1,9 +1,9 @@
-#include "menu.h"
+ï»¿#include "menu.h"
 #include "add.h"
 #include "FilterBar.h"
 #include <easyx.h>
 
-// ÓÎÏ·¿¨Æ¬²¼¾Ö³£Á¿
+// æ¸¸æˆå¡ç‰‡å¸ƒå±€å¸¸é‡
 namespace CardLayout
 {
     constexpr int COLS = 3;
@@ -12,17 +12,17 @@ namespace CardLayout
     constexpr int SPACING = 30;
     constexpr int START_X = 50;
     constexpr int START_Y = 100;
-    constexpr double COVER_HEIGHT_RATIO = 0.7; // ·âÃæÍ¼Æ¬¸ß¶ÈÕ¼¿¨Æ¬¸ß¶ÈµÄ±ÈÀı
+    constexpr double COVER_HEIGHT_RATIO = 0.7; // å°é¢å›¾ç‰‡é«˜åº¦å å¡ç‰‡é«˜åº¦çš„æ¯”ä¾‹
 }
 
-void GameLauncherUI::DrawGameCard(const GameInfo& game, int x, int y, int width, int height, bool isHovered, bool isSelected)
+void GameLauncherUI::DrawGameCard(const GameInfo &game, int x, int y, int width, int height, bool isHovered, bool isSelected)
 {
-    // 1. »æÖÆ¿¨Æ¬±³¾°
+    // 1. ç»˜åˆ¶å¡ç‰‡èƒŒæ™¯
     COLORREF backgroundColor = isSelected ? theme.cardSelected : isHovered ? theme.cardHover
-        : theme.cardBackground;
+                                                                           : theme.cardBackground;
     DrawRoundRect(x, y, x + width, y + height, 10, backgroundColor, RGB(90, 95, 110));
 
-    // 2. »æÖÆÓÎÏ··âÃæ
+    // 2. ç»˜åˆ¶æ¸¸æˆå°é¢
     int coverHeight = height * 0.6;
     IMAGE coverImage;
     if (game.coverPath.empty())
@@ -36,35 +36,35 @@ void GameLauncherUI::DrawGameCard(const GameInfo& game, int x, int y, int width,
         loadimage(&coverImage, game.coverPath.c_str(), width - 10, coverHeight, true);
         putimage(x + 5, y + 5, &coverImage);
     }
-        // 3. »æÖÆÓÎÏ·±êÌâ
-	int titleHeight = coverHeight+10;
-        settextcolor(theme.text);
-        setbkmode(TRANSPARENT);
-        RECT titleRect = {
-            x + 15,
-            y + titleHeight,
-            x + width - 10,
-            y + height - 30 };
-        drawtext(game.title.c_str(), &titleRect, DT_LEFT | DT_TOP | DT_WORDBREAK);
+    // 3. ç»˜åˆ¶æ¸¸æˆæ ‡é¢˜
+    int titleHeight = coverHeight + 10;
+    settextcolor(theme.text);
+    setbkmode(TRANSPARENT);
+    RECT titleRect = {
+        x + 15,
+        y + titleHeight,
+        x + width - 10,
+        y + height - 30};
+    drawtext(game.title.c_str(), &titleRect, DT_LEFT | DT_TOP | DT_WORDBREAK);
 
-        // 4. »æÖÆÓÎÏ·ĞÅÏ¢
-        settextcolor(theme.textSecondary);
-        char playCountInfo[64];
-        sprintf_s(playCountInfo, "ÓÎÍæ: %d´Î", game.playCount);
-        outtextxy(x + 15, y + height - 35, playCountInfo);
+    // 4. ç»˜åˆ¶æ¸¸æˆä¿¡æ¯
+    settextcolor(theme.textSecondary);
+    char playCountInfo[64];
+    sprintf_s(playCountInfo, "æ¸¸ç©: %dæ¬¡", game.playCount);
+    outtextxy(x + 15, y + height - 35, playCountInfo);
 }
 void GameLauncherUI::DrawMainView()
 {
-    // 1. ÉèÖÃ»ù±¾±³¾°
+    // 1. è®¾ç½®åŸºæœ¬èƒŒæ™¯
     setbkcolor(theme.background);
     cleardevice();
 
-    // 2. »æÖÆ±êÌâ
+    // 2. ç»˜åˆ¶æ ‡é¢˜
     settextcolor(theme.text);
-    settextstyle(28, 0, _T("Î¢ÈíÑÅºÚ"));
-    outtextxy(50, 30, _T("ÓÎÏ·Æô¶¯Æ÷"));
+    settextstyle(28, 0, _T("å¾®è½¯é›…é»‘"));
+    outtextxy(50, 30, _T("æ¸¸æˆå¯åŠ¨å™¨"));
 
-    // 3. »æÖÆÓÎÏ·Íø¸ñ
+    // 3. ç»˜åˆ¶æ¸¸æˆç½‘æ ¼
     for (size_t i = 0; i < games.size(); i++)
     {
         const int row = i / CardLayout::COLS;
@@ -80,11 +80,8 @@ void GameLauncherUI::DrawMainView()
             i == hoveredIndex,
             i == selectedIndex);
     }
+    filterBar->Draw(*this);
 
-    // 4. »æÖÆµ×²¿É¸Ñ¡±êÇ©
-    settextstyle(14, 0, _T("Î¢ÈíÑÅºÚ"));
-    outtextxy(50, getheight() - 50, _T("É¸Ñ¡: È«²¿ Ã°ÏÕ ¾ºËÙ RPG Ä£Äâ ¶¯×÷"));
-
-    // 5. »æÖÆÌí¼Ó°´Å¥
+    // 5. ç»˜åˆ¶æ·»åŠ æŒ‰é’®
     addBtn->Draw(theme);
 }

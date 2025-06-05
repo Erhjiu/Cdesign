@@ -128,7 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="add.cpp" />
-    <ClCompile Include="dropDown.cpp" />
+    <ClCompile Include="display_change.cpp" />
     <ClCompile Include="FilterBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
@@ -137,10 +137,8 @@
   <ItemGroup>
     <ClInclude Include="add.h" />
     <ClInclude Include="data.h" />
-    <ClInclude Include="dropDown.h" />
     <ClInclude Include="FilterBar.h" />
     <ClInclude Include="menu.h" />
-    <ClInclude Include="range.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="games.json" />
