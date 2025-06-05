@@ -248,6 +248,9 @@ int main()
 			// 检查鼠标悬停/点击
 			if (msg.message == WM_MOUSEMOVE || msg.message == WM_LBUTTONDOWN)
 			{
+				bool isGameHovered = false;
+
+				// 检测游戏卡片
 				for (int i = 0; i < launcher->games.size(); i++)
 				{
 					int row = i / cols;
@@ -259,63 +262,52 @@ int main()
 						msg.y >= y && msg.y <= y + cardHeight)
 					{
 						hoveredIndex = i;
+						isGameHovered = true;
 
-						// 双击选择游戏
 						if (msg.message == WM_LBUTTONDOWN)
 						{
-							// 双击检测
-							static POINT lastClickPos = {0, 0};
-							static DWORD lastClickTime = 0;
+							static POINT lastClickPosGame = {0, 0};
+							static DWORD lastClickTimeGame = 0;
 							DWORD currentTime = GetTickCount();
 
-							// 检查是否在相同位置且时间间隔短
-							bool isDoubleClick = (currentTime - lastClickTime < 300) &&
-												 (abs(msg.x - lastClickPos.x) < 10) &&
-												 (abs(msg.y - lastClickPos.y) < 10);
+							bool isDoubleClick = (currentTime - lastClickTimeGame < 300) &&
+												 (abs(msg.x - lastClickPosGame.x) < 10) &&
+												 (abs(msg.y - lastClickPosGame.y) < 10);
 
 							if (isDoubleClick)
 							{
 								showDetails = true;
 								selectedIndex = i;
 							}
-							lastClickTime = currentTime;
-							lastClickPos = {msg.x, msg.y};
+							lastClickTimeGame = currentTime;
+							lastClickPosGame = {msg.x, msg.y};
 						}
 					}
 				}
+			}
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				// 确保标签数组已初始化
+				vector<string> categories = filterBar->loadTags();
+				filterBar->currentTags = categories; // 保存当前标签列表
+
 				for (int i = 0; i < filterBar->currentTags.size(); i++)
 				{
 					int filtercol = i % filterCols;
-					int filterX = filterStartX + filtercol * filterWidth;
-					int filterY = filterStartY + filterHeight;
-					if (msg.x >= filterX && msg.x <= filterX + filterWidth && msg.y >= filterStartY && msg.y <= filterY)
+					int filterX = filterStartX + filtercol * (filterWidth+10);
+					int filterY = filterStartY;
+
+					// 检查鼠标是否在标签区域内
+					if (msg.x >= filterX && msg.x <= filterX + filterWidth &&
+						msg.y >= filterY && msg.y <= filterY + filterHeight)
 					{
-
-						// 双击选择游戏
-						if (msg.message == WM_LBUTTONDOWN)
-						{
-							// 双击检测
-							static POINT lastClickPos = {0, 0};
-							static DWORD lastClickTime = 0;
-							DWORD currentTime = GetTickCount();
-
-							// 检查是否在相同位置且时间间隔短
-							bool isDoubleClick = (currentTime - lastClickTime < 300) &&
-												 (abs(msg.x - lastClickPos.x) < 10) &&
-												 (abs(msg.y - lastClickPos.y) < 10);
-
-							if (isDoubleClick)
-							{
-								filterBar->tagIndex = i;
-								vector<string> categories = filterBar->loadTags();
-								filterBar->filterGames.clear();				  // 清空之前的筛选结果
-								filterBar->getFilterGames(categories[i]);	  // 根据选中的标签筛选游戏
-								launcher->filterBar = *filterBar;			  // 更新launcher中的filterBar
-								launcher->games = launcher->GetCurrentPage(); // 更新当前页面游戏列表
-							}
-							lastClickTime = currentTime;
-							lastClickPos = {msg.x, msg.y};
-						}
+						// 单击选择标签，直接触发筛选
+						filterBar->tagIndex = i;
+						filterBar->filterGames.clear();				  // 清空之前的筛选结果
+						filterBar->getFilterGames(categories[i]);	  // 根据选中的标签筛选游戏
+						launcher->filterBar = *filterBar;			  // 更新 launcher 中的 filterBar
+						launcher->games = launcher->GetCurrentPage(); // 更新当前页面游戏列表
+						break;										  // 找到匹配的标签后退出循环
 					}
 				}
 			}

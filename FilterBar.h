@@ -18,6 +18,7 @@ public:
 	int width = 100;
 	int height = 50;
 	int tagIndex = 0;
+	bool isDoubleClicked = false; // 添加双击状态标记
 	vector<string> currentTags;
 	vector<string> loadTags();
 	vector<GameInfo> filterGames;

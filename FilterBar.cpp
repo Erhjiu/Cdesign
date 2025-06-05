@@ -13,16 +13,16 @@ using json = nlohmann::json;
 
 bool compare(const pair<string, int> &a, const pair<string, int> &b)
 {
-	return a.second > b.second; // 闄嶅簭鎺掑簭
+	return a.second > b.second; 
 }
 
 bool FilterBar::LoadGames()
 {
-	allGames.clear(); // 娓呯┖涔嬪墠鐨勬暟鎹?
+	allGames.clear(); //清空之前的数据
 	ifstream ifs(savePath, ios::binary);
 	if (!ifs.is_open())
 	{
-		// cout <<"鏃犳硶鎵撳紑娓告垙鏁版嵁鏂囦欢锛屽彲鑳芥枃浠朵笉瀛樺湪鎴栬矾寰勯敊璇?" << endl;
+		// cout <<"无法打开游戏数据文件，可能文件不存在或路径错误" << endl;
 		return false;
 	}
 	try
@@ -30,7 +30,7 @@ bool FilterBar::LoadGames()
 		ifs.seekg(0, ios::end);
 		if (ifs.tellg() == 0)
 		{
-			// cout << "娓告垙鏁版嵁鏂囦欢涓虹┖锛岃?锋坊鍔犳父鎴忋�?" << endl;
+			// cout << "游戏数据文件为空，请添加游戏。" << endl;
 			ifs.close();
 			return false;
 		}
@@ -42,15 +42,15 @@ bool FilterBar::LoadGames()
 	}
 	catch (const json::parse_error &e)
 	{
-		cout << "JSON瑙ｆ瀽閿欒??: " << e.what() << endl;
+		cout << "JSON解析错误: " << e.what() << endl;
 	}
 	catch (const json::type_error &e)
 	{
-		cout << "JSON绫诲瀷閿欒??: " << e.what() << endl;
+		cout << "JSON类型错误: " << e.what() << endl;
 	}
 	catch (const std::exception &e)
 	{
-		cout << "鍏朵粬閿欒??: " << e.what() << endl;
+		cout << "其他错误: " << e.what() << endl;
 	}
 	ifs.close();
 	return false;
@@ -59,7 +59,7 @@ void FilterBar::LoadSampleData()
 {
 	if (!LoadGames())
 	{
-		cout << "鍔犺浇娓告垙鏁版嵁澶辫触" << endl;
+		cout << "加载游戏数据失败" << endl;
 		allGames = {};
 	}
 }
@@ -84,12 +84,12 @@ vector<string> FilterBar::loadTags()
 			}
 		}
 	}
-	// 灏唌ap涓?鐨勫唴瀹硅浆鎹?涓簐ector<pair<string, int>>锛屼互渚挎帓搴?
+	// 将map中的内容转换为vector<pair<string, int>>，以便排序
 	vector<pair<string, int>> Vec(countTags.begin(), countTags.end());
 
-	// 鎸夌収鍑虹幇娆℃暟浠庡ぇ鍒板皬鎺掑簭
+	// 按照出现次数从大到小排序
 	sort(Vec.begin(), Vec.end(), compare);
-	int Size = min(Vec.size(), 6);
+	int Size = min(Vec.size(), 5);
 	for (int i = 0; i < Size; i++)
 	{
 		pair<string, int> tagPair = Vec[i];
