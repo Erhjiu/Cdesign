@@ -1,28 +1,77 @@
 #include "FilterBar.h"
-#include "menu.h"
+#include "Library.h"
+#include "json.hpp"
 #include <easyx.h>
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
 
 using namespace std;
-
-void FilterBar::output()
-{
-	cout << "1";
-}
+const string savePath = "games.json";
+using namespace std;
+using json = nlohmann::json;
 
 bool compare(const pair<string, int> &a, const pair<string, int> &b)
 {
 	return a.second > b.second; // 降序排序
 }
 
-vector<string> FilterBar::loadTags(class GameLauncherUI &a)
+bool FilterBar::LoadGames()
+{
+	allGames.clear(); // 清空之前的数据
+	ifstream ifs(savePath, ios::binary);
+	if (!ifs.is_open())
+	{
+		//cout <<"无法打开游戏数据文件，可能文件不存在或路径错误" << endl;
+		return false;
+	}
+	try
+	{
+		ifs.seekg(0, ios::end);
+		if (ifs.tellg() == 0)
+		{
+			//cout << "游戏数据文件为空，请添加游戏。" << endl;
+			ifs.close();
+			return false;
+		}
+		ifs.seekg(0);
+		json j;
+		ifs >> j;
+		allGames = j.get<vector<GameInfo>>();
+		return true;
+	}
+	catch (const json::parse_error& e)
+	{
+		cout << "JSON解析错误: " << e.what() << endl;
+	}
+	catch (const json::type_error& e)
+	{
+		cout << "JSON类型错误: " << e.what() << endl;
+	}
+	catch (const std::exception& e)
+	{
+		cout << "其他错误: " << e.what() << endl;
+	}
+	ifs.close();
+	return false;
+}
+void FilterBar::LoadSampleData()
+{
+	if (!LoadGames())
+	{
+		cout << "加载游戏数据失败" << endl;
+		allGames = {};
+	}
+
+}
+
+
+vector<string> FilterBar::loadTags()
 {
 	vector<string> categories;
 	categories.push_back("ALL");
 	unordered_map<string, int> countTags;
-	for (const auto &game : a.allGames)
+	for (const auto &game : allGames)
 	{
 		for (const auto &tag : game.tags)
 		{
@@ -51,21 +100,21 @@ vector<string> FilterBar::loadTags(class GameLauncherUI &a)
 	return categories;
 }
 
-vector<int> FilterBar::filter(GameLauncherUI &a, string target)
+void FilterBar::getFilterGames( string target)
 {
 	vector<int> res;
 	vector<vector<string>> tags;
-	for (const auto &game : a.allGames)
+	for (const auto &game : allGames)
 	{
 		tags.push_back(game.tags);
 	}
-	if (target == "全部")
+	if (target == "ALL")
 	{
 		for (int i = 0; i < tags.size(); i++)
 		{
 			res.push_back(i);
 		}
-		return res;
+		filterGames =  allGames;
 	}
 	for (int i = 0; i < tags.size(); i++)
 	{
@@ -77,27 +126,9 @@ vector<int> FilterBar::filter(GameLauncherUI &a, string target)
 			}
 		}
 	}
-	return res;
-}
-
-void FilterBar::Draw(GameLauncherUI &a)
-{
-	int x = 50;
-	int y = 750;
-	int width = 100;
-	int height = 50;
-	vector<string> categories = loadTags(a);
-	settextstyle(16, 0, _T("Arial"));
-	settextcolor(RGB(0, 0, 0));
-	for (size_t i = 0; i < categories.size(); ++i)
-	{
-		setfillcolor(RGB(200, 200, 200));
-		if (currentFilter == categories[i])
-		{
-			setfillcolor(RGB(100, 150, 255)); // 高亮颜色
+	for (auto game : allGames) {
+		if (find(res.begin(), res.end(), game.id) != res.end()) {
+			filterGames.push_back(game);
 		}
-		a.DrawRoundRect(x + i * (width + 10), y, x + i * (width + 10) + width, y + height, 10, RGB(65, 70, 85), RGB(65, 70, 85));
-		settextcolor(RGB(0, 0, 0));
-		outtextxy(x + i * (width + 10) + 5, y + 15, categories[i].c_str());
 	}
 }

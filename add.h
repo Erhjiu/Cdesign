@@ -1,17 +1,16 @@
 #pragma once
 #include "data.h"
-#include <easyx.h>
+#include <iostream>
 #include <vector>
 
 class addButton
 {
 private:
-	int x, y, width, height;
-
+	int id = 0;
 public:
-	addButton() : x(0), y(0), width(50), height(50) {};
-	addButton(int x, int y, int width, int height)
-		: x(x), y(y), width(width), height(height) {}
-	void Draw(const UITheme &theme);
-	bool checkClick(int mouseX, int mouseY);
+	int x = 930;
+	int y = 730;
+	int width = 50;
+	int height = 50;
+	void askGameInfo();
 };

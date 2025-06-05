@@ -13,7 +13,7 @@ using namespace std;
 
 struct GameInfo
 {
-	string id;
+	int id;
 	string title;
 	string coverPath;	   // 封面
 	string exePath;		   // 游戏路径

@@ -131,14 +131,13 @@
     <ClCompile Include="display_change.cpp" />
     <ClCompile Include="FilterBar.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="mainView.cpp" />
+    <ClCompile Include="Library.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="add.h" />
     <ClInclude Include="data.h" />
     <ClInclude Include="FilterBar.h" />
-    <ClInclude Include="menu.h" />
+    <ClInclude Include="Library.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="games.json" />

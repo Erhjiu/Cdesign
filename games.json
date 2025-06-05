@@ -2,7 +2,7 @@
     {
         "coverPath": "C:/game_covers/witcher3.jpg",
         "exePath": "C:/games/witcher3/witcher3.exe",
-        "id": "game_001",
+        "id": 1,
         "lastPlayed": 1689123456,
         "playCount": 42,
         "tags": [
@@ -15,7 +15,7 @@
     {
         "coverPath": "C:/game_covers/stardew.png",
         "exePath": "C:/games/stardew/Stardew Valley.exe",
-        "id": "game_002",
+        "id": 2,
         "lastPlayed": 1689234567,
         "playCount": 87,
         "tags": [
@@ -28,7 +28,7 @@
     {
         "coverPath": "C:/game_covers/doom.jpg",
         "exePath": "C:/games/doom/DOOMEternalx64.exe",
-        "id": "game_003",
+        "id": 3,
         "lastPlayed": 1689345678,
         "playCount": 15,
         "tags": [
@@ -41,7 +41,7 @@
     {
         "coverPath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\resources\\win32\\code_150x150.png",
         "exePath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
-        "id": "4",
+        "id": 4,
         "lastPlayed": 1748770382,
         "playCount": 3,
         "tags": [
@@ -54,7 +54,7 @@
     {
         "coverPath": "./R-C.jpg",
         "exePath": "2",
-        "id": "ww",
+        "id": 5,
         "lastPlayed": 1748754361,
         "playCount": 1,
         "tags": [
@@ -67,7 +67,7 @@
     {
         "coverPath": "./R-C.jpg",
         "exePath": "2",
-        "id": "ww",
+        "id": 6,
         "lastPlayed": 1748754361,
         "playCount": 1,
         "tags": [

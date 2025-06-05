@@ -1,24 +1,29 @@
 #pragma once
+#include "data.h"
 #include <easyx.h>
 #include <vector>
 #include <string>
 
-class GameLauncherUI;
 
 using namespace std;
 class FilterBar
 {
 private:
-	string currentFilter = "全部";
-	void output();
-
+	vector<GameInfo> allGames;
+	string currentFilter = "ALL";
+	void LoadSampleData();
 public:
-	vector<string> loadTags(GameLauncherUI &a);
-	vector<int> filter(GameLauncherUI &a, string target);
-	FilterBar(GameLauncherUI &a)
-	{
-		vector<int> b = filter(a, currentFilter);
+	int x = 50;
+    int y = 750;
+    int width = 100;
+    int height = 50;
+	int tagIndex = 0;
+	vector<string> currentTags;
+	vector<string> loadTags();
+	vector<GameInfo> filterGames;
+	void getFilterGames( string target);
+	bool LoadGames();
+	FilterBar() {
+		LoadSampleData();
 	}
-	void Draw(GameLauncherUI& a);
-	void handleMouseClick(int x, int y);
 };
