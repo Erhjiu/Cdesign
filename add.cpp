@@ -24,3 +24,4 @@ bool addButton::checkClick(int mouseX, int mouseY) {
 	return mouseX >= x && mouseX <= x + width &&
 		mouseY >= y && mouseY <= y + height;
 }
+

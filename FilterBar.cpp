@@ -2,12 +2,20 @@
 #include "menu.h"
 #include <easyx.h>
 #include <vector>
+#include <algorithm>
+#include <unordered_map>
 
 using namespace std; 
 
 void FilterBar::output() {
 	cout << "1";
 }
+
+
+bool compare(const pair<string, int>& a, const pair<string, int>& b) {
+	return a.second > b.second; // 降序排序
+}
+
 
 vector<string> FilterBar::loadTags(class GameLauncherUI& a)
 {
@@ -23,6 +31,17 @@ vector<string> FilterBar::loadTags(class GameLauncherUI& a)
 			}
 		}
 	}
+	// 使用unordered_map统计每个字符串的出现次数
+	unordered_map<string, int> countMap;
+	for (const auto& str : categories) {
+		countMap[str]++;
+	}
+
+	// 将map中的内容转换为vector<pair<string, int>>，以便排序
+	vector<pair<string, int>> countVector(countMap.begin(), countMap.end());
+
+	// 按照出现次数从大到小排序
+	sort(countVector.begin(), countVector.end(), compare);
 	return categories;
 }
 
