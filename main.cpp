@@ -39,8 +39,8 @@ void DrawRoundRect(int x1, int y1, int x2, int y2, int radius, COLORREF fill, CO
 	roundrect(x1, y1, x2, y2, radius, radius);
 }
 
-//绘制详情面板
-void DrawDetailPanel(const GameInfo& game)
+// 绘制详情面板
+void DrawDetailPanel(const GameInfo &game)
 {
 	int panelWidth = 400;
 	int panelHeight = 500;
@@ -72,15 +72,15 @@ void DrawDetailPanel(const GameInfo& game)
 	settextstyle(20, 0, "微软雅黑");
 	std::ostringstream info;
 	info << "上次游玩: " << game.GetLastPlayedStr() << "\n"
-		<< "游玩次数: " << game.playCount << "\n"
-		<< "标签: ";
+		 << "游玩次数: " << game.playCount << "\n"
+		 << "标签: ";
 
-	for (const auto& tag : game.tags)
+	for (const auto &tag : game.tags)
 	{
 		info << tag << " ";
 	}
 
-	RECT infoRect = { x + 20, y + 280, x + panelWidth - 20, y + 380 };
+	RECT infoRect = {x + 20, y + 280, x + panelWidth - 20, y + 380};
 	drawtext(info.str().c_str(), &infoRect, DT_LEFT | DT_TOP | DT_WORDBREAK);
 
 	// 按钮
@@ -94,19 +94,21 @@ void DrawDetailPanel(const GameInfo& game)
 	line(x + panelWidth - 20, y + 20, x + panelWidth - 30, y + 30);
 }
 
-//绘制筛选栏
-void DrawFilterBar(FilterBar& filterBar) {
+// 绘制筛选栏
+void DrawFilterBar(FilterBar &filterBar)
+{
 	vector<string> categories = filterBar.loadTags();
 	settextstyle(16, 0, _T("Arial"));
 	settextcolor(RGB(0, 0, 0));
 	for (size_t i = 0; i < categories.size(); ++i)
 	{
 		COLORREF currentColor;
-		if (categories[i] == categories[filterBar.tagIndex])
+		if (i == filterBar.tagIndex) // 直接比较索引值
 		{
 			currentColor = RGB(100, 150, 255); // 高亮颜色
 		}
-		else {
+		else
+		{
 			currentColor = (RGB(200, 200, 200));
 		}
 		DrawRoundRect(filterBar.x + i * (filterBar.width + 10), filterBar.y, filterBar.x + i * (filterBar.width + 10) + filterBar.width, filterBar.y + filterBar.height, 10, currentColor, currentColor);
@@ -116,7 +118,8 @@ void DrawFilterBar(FilterBar& filterBar) {
 }
 
 // 绘制添加按钮
-void DrawAddButton(addButton& addBtn) {
+void DrawAddButton(addButton &addBtn)
+{
 	setfillcolor(theme.add);
 	setlinecolor(RGB(100, 100, 100));
 	solidcircle(addBtn.x + addBtn.width / 2, addBtn.y + addBtn.height / 2, 25);
@@ -128,11 +131,11 @@ void DrawAddButton(addButton& addBtn) {
 	line(addBtn.x + addBtn.width / 2, addBtn.y + addBtn.height / 4, addBtn.x + addBtn.width / 2, addBtn.y + addBtn.height * 3 / 4);
 }
 // 绘制游戏卡片
-void DrawGameCard(const GameInfo& game, int x, int y, int width, int height, bool isHovered, bool isSelected)
+void DrawGameCard(const GameInfo &game, int x, int y, int width, int height, bool isHovered, bool isSelected)
 {
 	// 1. 绘制卡片背景
 	COLORREF backgroundColor = isSelected ? theme.cardSelected : isHovered ? theme.cardHover
-		: theme.cardBackground;
+																		   : theme.cardBackground;
 	DrawRoundRect(x, y, x + width, y + height, 10, backgroundColor, RGB(90, 95, 110));
 
 	// 2. 绘制游戏封面
@@ -157,7 +160,7 @@ void DrawGameCard(const GameInfo& game, int x, int y, int width, int height, boo
 		x + 15,
 		y + titleHeight,
 		x + width - 10,
-		y + height - 30 };
+		y + height - 30};
 	drawtext(game.title.c_str(), &titleRect, DT_LEFT | DT_TOP | DT_WORDBREAK);
 
 	// 4. 绘制游戏信息
@@ -167,9 +170,8 @@ void DrawGameCard(const GameInfo& game, int x, int y, int width, int height, boo
 	outtextxy(x + 15, y + height - 35, playCountInfo);
 }
 
-
 // 主界面
-void DrawMainView(vector<GameInfo> games, int selectedIndex, int hoveredIndex, FilterBar* filterBar, addButton* addBtn)
+void DrawMainView(vector<GameInfo> games, int selectedIndex, int hoveredIndex, FilterBar *filterBar, addButton *addBtn)
 {
 	// 1. 设置基本背景
 	setbkcolor(theme.background);
@@ -200,23 +202,24 @@ void DrawMainView(vector<GameInfo> games, int selectedIndex, int hoveredIndex, F
 	DrawAddButton(*addBtn);
 }
 
-
-
 bool checkClick(int mouseX, int mouseY, int x, int y, int width, int height)
 {
 	return mouseX >= x && mouseX <= x + width &&
-		mouseY >= y && mouseY <= y + height;
+		   mouseY >= y && mouseY <= y + height;
 }
-
 
 int main()
 {
-	GameLauncherUI* launcher;
-	launcher = new GameLauncherUI();
-	addButton* addBtn;
-	addBtn = new addButton();
-	FilterBar* filterBar;
+	FilterBar *filterBar;
 	filterBar = new FilterBar();
+
+	GameLauncherUI *launcher;
+	launcher = new GameLauncherUI();
+	launcher->filterBar = *filterBar; // 使launcher使用外部创建的filterBar
+
+	addButton *addBtn;
+	addBtn = new addButton();
+
 	initgraph(1000, 800);
 	BeginBatchDraw();
 	int selectedIndex = -1;
@@ -261,14 +264,14 @@ int main()
 						if (msg.message == WM_LBUTTONDOWN)
 						{
 							// 双击检测
-							static POINT lastClickPos = { 0, 0 };
+							static POINT lastClickPos = {0, 0};
 							static DWORD lastClickTime = 0;
 							DWORD currentTime = GetTickCount();
 
 							// 检查是否在相同位置且时间间隔短
 							bool isDoubleClick = (currentTime - lastClickTime < 300) &&
-								(abs(msg.x - lastClickPos.x) < 10) &&
-								(abs(msg.y - lastClickPos.y) < 10);
+												 (abs(msg.x - lastClickPos.x) < 10) &&
+												 (abs(msg.y - lastClickPos.y) < 10);
 
 							if (isDoubleClick)
 							{
@@ -276,35 +279,42 @@ int main()
 								selectedIndex = i;
 							}
 							lastClickTime = currentTime;
-							lastClickPos = { msg.x, msg.y };
+							lastClickPos = {msg.x, msg.y};
 						}
 					}
 				}
-				for (int i = 0; i < filterBar->currentTags.size(); i++) {
+				for (int i = 0; i < filterBar->currentTags.size(); i++)
+				{
 					int filtercol = i % filterCols;
 					int filterX = filterStartX + filtercol * filterWidth;
 					int filterY = filterStartY + filterHeight;
-					if (msg.x >= filterX && msg.x <= filterX + filterWidth && msg.y >= filterStartY && msg.y <= filterY) {
+					if (msg.x >= filterX && msg.x <= filterX + filterWidth && msg.y >= filterStartY && msg.y <= filterY)
+					{
 
 						// 双击选择游戏
 						if (msg.message == WM_LBUTTONDOWN)
 						{
 							// 双击检测
-							static POINT lastClickPos = { 0, 0 };
+							static POINT lastClickPos = {0, 0};
 							static DWORD lastClickTime = 0;
 							DWORD currentTime = GetTickCount();
 
 							// 检查是否在相同位置且时间间隔短
 							bool isDoubleClick = (currentTime - lastClickTime < 300) &&
-								(abs(msg.x - lastClickPos.x) < 10) &&
-								(abs(msg.y - lastClickPos.y) < 10);
+												 (abs(msg.x - lastClickPos.x) < 10) &&
+												 (abs(msg.y - lastClickPos.y) < 10);
 
 							if (isDoubleClick)
 							{
 								filterBar->tagIndex = i;
+								vector<string> categories = filterBar->loadTags();
+								filterBar->filterGames.clear();				  // 清空之前的筛选结果
+								filterBar->getFilterGames(categories[i]);	  // 根据选中的标签筛选游戏
+								launcher->filterBar = *filterBar;			  // 更新launcher中的filterBar
+								launcher->games = launcher->GetCurrentPage(); // 更新当前页面游戏列表
 							}
 							lastClickTime = currentTime;
-							lastClickPos = { msg.x, msg.y };
+							lastClickPos = {msg.x, msg.y};
 						}
 					}
 				}
@@ -325,7 +335,7 @@ int main()
 				}
 				// 启动按钮
 				else if (msg.x >= panelX + 100 && msg.x <= panelX + 300 &&
-					msg.y >= panelY + panelHeight - 60 && msg.y <= panelY + panelHeight - 20)
+						 msg.y >= panelY + panelHeight - 60 && msg.y <= panelY + panelHeight - 20)
 				{
 					MessageBox(GetHWnd(), "游戏启动中...", launcher->games[selectedIndex].title.c_str(), MB_OK);
 					string gamePath = launcher->games[selectedIndex].exePath;
@@ -367,10 +377,12 @@ int main()
 			}
 		}
 
-		if (checkClick(msg.x, msg.y,addBtn->x, addBtn->y, addBtn->width, addBtn->height) && msg.message == WM_LBUTTONDOWN)
+		if (checkClick(msg.x, msg.y, addBtn->x, addBtn->y, addBtn->width, addBtn->height) && msg.message == WM_LBUTTONDOWN)
 		{
 			addBtn->askGameInfo();
-			filterBar->LoadGames();              // 重新加载游戏数据
+			filterBar->LoadGames();						  // 重新加载游戏数据
+			filterBar->getFilterGames("ALL");			  // 加载所有游戏
+			launcher->filterBar = *filterBar;			  // 更新launcher中的filterBar
 			launcher->games = launcher->GetCurrentPage(); // 更新当前页面游戏列表
 		}
 		if (msg.message == WM_KEYDOWN && msg.vkcode == VK_RIGHT)
@@ -385,7 +397,7 @@ int main()
 		}
 		// 渲染逻辑
 		cleardevice();
-		DrawMainView(filterBar->filterGames, selectedIndex, hoveredIndex,filterBar,addBtn);
+		DrawMainView(launcher->games, selectedIndex, hoveredIndex, filterBar, addBtn);
 		if (showDetails && selectedIndex >= 0)
 		{
 			DrawDetailPanel(launcher->games[selectedIndex]);

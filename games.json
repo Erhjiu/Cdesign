@@ -42,8 +42,8 @@
         "coverPath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\resources\\win32\\code_150x150.png",
         "exePath": "D:\\Users\\0\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
         "id": 4,
-        "lastPlayed": 1748770382,
-        "playCount": 3,
+        "lastPlayed": 1749150587,
+        "playCount": 6,
         "tags": [
             "竞技",
             "编程",
@@ -59,6 +59,18 @@
         "playCount": 1,
         "tags": [
             "竞技",
+            "二次元",
+            "奇幻"
+        ],
+        "title": "maomao"
+    },
+    {
+        "coverPath": "./R-C.jpg",
+        "exePath": "2",
+        "id": 6,
+        "lastPlayed": 1748754361,
+        "playCount": 1,
+        "tags": [
             "二次元",
             "奇幻"
         ],

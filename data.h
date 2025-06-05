@@ -15,16 +15,16 @@ struct GameInfo
 {
 	int id;
 	string title;
-	string coverPath;	   // 灏侀潰
-	string exePath;		   // 娓告垙璺緞
-	time_t lastPlayed = 0; // 涓婃娓哥帺鏃堕棿
-	int playCount = 0;	   // 娓哥帺娆℃暟
-	vector<string> tags;   // 鏍囩
+	string coverPath;	   // 封面
+	string exePath;		   // 游戏路径
+	time_t lastPlayed = 0; // 上次游玩时间
+	int playCount = 0;	   // 游玩次数
+	vector<string> tags;   // 标签
 
 	string GetLastPlayedStr() const
 	{
 		if (playCount == 0)
-			return "浠庢湭鐜╄繃";
+			return "从未玩过";
 		char buf[64];
 		tm timeinfo;
 		localtime_s(&timeinfo, &lastPlayed);
@@ -32,7 +32,7 @@ struct GameInfo
 		return buf;
 	}
 };
-// UI棰滆壊涓婚
+// UI颜色主题
 struct UITheme
 {
 	COLORREF background = RGB(40, 42, 54);

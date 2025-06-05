@@ -18,11 +18,11 @@ bool compare(const pair<string, int> &a, const pair<string, int> &b)
 
 bool FilterBar::LoadGames()
 {
-	allGames.clear(); // æ¸…ç©ºä¹‹å‰çš„æ•°æ®
+	allGames.clear(); // æ¸…ç©ºä¹‹å‰çš„æ•°æ?
 	ifstream ifs(savePath, ios::binary);
 	if (!ifs.is_open())
 	{
-		//cout <<"æ— æ³•æ‰“å¼€æ¸¸æˆæ•°æ®æ–‡ä»¶ï¼Œå¯èƒ½æ–‡ä»¶ä¸å­˜åœ¨æˆ–è·¯å¾„é”™è¯¯" << endl;
+		// cout <<"æ— æ³•æ‰“å¼€æ¸¸æˆæ•°æ®æ–‡ä»¶ï¼Œå¯èƒ½æ–‡ä»¶ä¸å­˜åœ¨æˆ–è·¯å¾„é”™è¯?" << endl;
 		return false;
 	}
 	try
@@ -30,7 +30,7 @@ bool FilterBar::LoadGames()
 		ifs.seekg(0, ios::end);
 		if (ifs.tellg() == 0)
 		{
-			//cout << "æ¸¸æˆæ•°æ®æ–‡ä»¶ä¸ºç©ºï¼Œè¯·æ·»åŠ æ¸¸æˆã€‚" << endl;
+			// cout << "æ¸¸æˆæ•°æ®æ–‡ä»¶ä¸ºç©ºï¼Œè?·æ·»åŠ æ¸¸æˆã€?" << endl;
 			ifs.close();
 			return false;
 		}
@@ -40,17 +40,17 @@ bool FilterBar::LoadGames()
 		allGames = j.get<vector<GameInfo>>();
 		return true;
 	}
-	catch (const json::parse_error& e)
+	catch (const json::parse_error &e)
 	{
-		cout << "JSONè§£æé”™è¯¯: " << e.what() << endl;
+		cout << "JSONè§£æé”™è??: " << e.what() << endl;
 	}
-	catch (const json::type_error& e)
+	catch (const json::type_error &e)
 	{
-		cout << "JSONç±»å‹é”™è¯¯: " << e.what() << endl;
+		cout << "JSONç±»å‹é”™è??: " << e.what() << endl;
 	}
-	catch (const std::exception& e)
+	catch (const std::exception &e)
 	{
-		cout << "å…¶ä»–é”™è¯¯: " << e.what() << endl;
+		cout << "å…¶ä»–é”™è??: " << e.what() << endl;
 	}
 	ifs.close();
 	return false;
@@ -62,9 +62,7 @@ void FilterBar::LoadSampleData()
 		cout << "åŠ è½½æ¸¸æˆæ•°æ®å¤±è´¥" << endl;
 		allGames = {};
 	}
-
 }
-
 
 vector<string> FilterBar::loadTags()
 {
@@ -86,7 +84,7 @@ vector<string> FilterBar::loadTags()
 			}
 		}
 	}
-	// å°†mapä¸­çš„å†…å®¹è½¬æ¢ä¸ºvector<pair<string, int>>ï¼Œä»¥ä¾¿æ’åº
+	// å°†mapä¸?çš„å†…å®¹è½¬æ?ä¸ºvector<pair<string, int>>ï¼Œä»¥ä¾¿æ’åº?
 	vector<pair<string, int>> Vec(countTags.begin(), countTags.end());
 
 	// æŒ‰ç…§å‡ºç°æ¬¡æ•°ä»å¤§åˆ°å°æ’åº
@@ -100,35 +98,33 @@ vector<string> FilterBar::loadTags()
 	return categories;
 }
 
-void FilterBar::getFilterGames( string target)
+void FilterBar::getFilterGames(string target)
 {
-	vector<int> res;
-	vector<vector<string>> tags;
-	for (const auto &game : allGames)
-	{
-		tags.push_back(game.tags);
-	}
+	filterGames.clear(); // ÏÈÇå¿ÕÖ®Ç°µÄÉ¸Ñ¡½á¹û
+
 	if (target == "ALL")
 	{
-		for (int i = 0; i < tags.size(); i++)
-		{
-			res.push_back(i);
-		}
-		filterGames =  allGames;
+		filterGames = allGames; // Èç¹ûÊÇALL£¬Ö±½ÓÊ¹ÓÃËùÓĞÓÎÏ·
+		return;					// Ö±½Ó·µ»Ø£¬²»Ö´ĞĞºóÃæµÄ´úÂë
 	}
-	for (int i = 0; i < tags.size(); i++)
+
+	// Èç¹û²»ÊÇALL£¬Ôò¸ù¾İ±êÇ©É¸Ñ¡
+	vector<int> gameIndices;
+	for (int i = 0; i < allGames.size(); i++)
 	{
-		for (int j = 0; j < tags[i].size(); j++)
+		for (const auto &tag : allGames[i].tags)
 		{
-			if (tags[i][j] == target)
+			if (tag == target)
 			{
-				res.push_back(i);
+				gameIndices.push_back(i);
+				break; // ÕÒµ½Ò»¸öÆ¥ÅäµÄ±êÇ©¾Í¿ÉÒÔÁË£¬±ÜÃâÖØ¸´Ìí¼Ó
 			}
 		}
 	}
-	for (auto game : allGames) {
-		if (find(res.begin(), res.end(), game.id) != res.end()) {
-			filterGames.push_back(game);
-		}
+
+	// ¸ù¾İË÷ÒıÌí¼ÓÓÎÏ·µ½É¸Ñ¡½á¹û
+	for (int index : gameIndices)
+	{
+		filterGames.push_back(allGames[index]);
 	}
 }

@@ -1,24 +1,23 @@
-ï»¿#include "add.h"
+#include "add.h"
 
 const string savePath = "games.json";
 using namespace std;
 using json = nlohmann::json;
 
-
 void addButton::askGameInfo()
 {
 	id++;
-	cout << "è¯·è¾“å…¥æ¸¸æˆåç§°ï¼š" << endl;
+	cout << "ÇëÊäÈëÓÎÏ·Ãû³Æ£º" << endl;
 	string title;
 	cin >> title;
-	cout << "è¯·è¾“å…¥æ¸¸æˆå°é¢è·¯å¾„ï¼š" << endl;
+	cout << "ÇëÊäÈëÓÎÏ··âÃæÂ·¾¶£º" << endl;
 	string coverPath;
 	cin >> coverPath;
-	cout << "è¯·è¾“å…¥æ¸¸æˆè·¯å¾„ï¼š" << endl;
+	cout << "ÇëÊäÈëÓÎÏ·Â·¾¶£º" << endl;
 	string exePath;
 	cin >> exePath;
 	int playCount = 0;
-	cout << "è¯·è¾“å…¥æ¸¸æˆæ ‡ç­¾ï¼š" << endl;
+	cout << "ÇëÊäÈëÓÎÏ·±êÇ©£º" << endl;
 	vector<string> tags;
 	string temptags;
 	string temp;
@@ -57,7 +56,7 @@ void addButton::askGameInfo()
 		}
 		catch (...)
 		{
-			// æ–‡ä»¶å†…å®¹ä¸æ˜¯æœ‰æ•ˆJSONï¼Œåˆ›å»ºæ–°æ•°ç»„
+			// ÎÄ¼şÄÚÈİ²»ÊÇÓĞĞ§JSON£¬´´½¨ĞÂÊı×é
 			allGames = json::array();
 		}
 		ifs.close();
@@ -69,14 +68,14 @@ void addButton::askGameInfo()
 		{"exePath", gameinfo.exePath},
 		{"lastPlayed", gameinfo.lastPlayed},
 		{"playCount", gameinfo.playCount},
-		{"tags", gameinfo.tags} };
+		{"tags", gameinfo.tags}};
 
 	allGames.push_back(jGame);
 
 	ofstream ofs(savePath);
 	if (ofs.is_open())
 	{
-		ofs << allGames.dump(4); // ç¾åŒ–è¾“å‡º
+		ofs << allGames.dump(4); // ÃÀ»¯Êä³ö
 		ofs.close();
 	}
 }
